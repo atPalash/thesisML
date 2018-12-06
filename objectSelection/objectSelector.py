@@ -130,8 +130,9 @@ try:
                                                                                           [int(x), int(y)],
                                                                                           depth)
                     cv2.putText(orig,
-                                "({x}, {y})".format(x=int(depth_point_in_meters_camera_coords[0] * 100),
-                                                                 y=int(depth_point_in_meters_camera_coords[1] * 100)),
+                                "({x}, {y}, {z})".format(x=int(depth_point_in_meters_camera_coords[0] * 100),
+                                                         y=int(depth_point_in_meters_camera_coords[1] * 100),
+                                                         z=int(depth_point_in_meters_camera_coords[2]*100)),
                                 (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX,
                                 0.65, (255, 255, 255), 2)
                 cv2.circle(orig, (int(realsense_img_cols/2), int(realsense_img_rows/2)), 5, (0, 0, 255), -1)
