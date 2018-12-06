@@ -12,19 +12,22 @@ def midpoint(ptA, ptB):
     return (ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5
 
 
+realsense_img_cols = 848
+realsense_img_rows = 480
+remove_pixel = 0
+list_of_objects = {97: 'objA', 98: 'objB', 99:'objC', 100:'objD'}
+image_padding = 10
+
+
 # Configure depth and color streams
 pipeline = rs.pipeline()
 config = rs.config()
-config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+config.enable_stream(rs.stream.depth, realsense_img_cols, realsense_img_rows, rs.format.z16, 30)
+config.enable_stream(rs.stream.color, realsense_img_cols, realsense_img_rows, rs.format.bgr8, 30)
 
 # Start streaming
 pipeline.start(config)
 
-remove_pixel = 0
-
-list_of_objects = {97: 'objA', 98: 'objB', 99:'objC', 100:'objD'}
-image_padding = 10
 for i in range(10):
     pipeline.wait_for_frames()
 
@@ -78,20 +81,32 @@ try:
                 continue
 
             orig = image_bordered.copy()
+            cv2.line(orig, (image_padding, image_padding), (image_padding, realsense_img_rows),
+                     (0, 0, 255), 20)
+            cv2.line(orig, (image_padding, image_padding), (realsense_img_cols, image_padding),
+                     (0, 0, 255), 20)
+            cv2.line(orig, (realsense_img_cols, image_padding), (realsense_img_cols, realsense_img_rows),
+                     (0, 0, 255), 20)
+            cv2.line(orig, (image_padding, realsense_img_rows), (realsense_img_cols, realsense_img_rows),
+                     (0, 0, 255), 20)
             box = cv2.minAreaRect(c)
             box = cv2.cv.BoxPoints(box) if imutils.is_cv2() else cv2.boxPoints(box)
 
             box = np.array(box, dtype="int")
-            if (box < 10).any() or (box > 640).any():
+            col_min = min(box[:, 0])
+            col_max = max(box[:, 0])
+            row_min = min(box[:, 1])
+            row_max = max(box[:, 1])
+            if col_min < 10 or col_max > realsense_img_cols or row_min < 10 or row_max > realsense_img_rows:
                 print "object out of camera view"
                 continue
             else:
-                x1 = min(box[:, 0]) - image_padding
-                x2 = max(box[:, 0]) - image_padding
-                y1 = min(box[:, 1]) - image_padding
-                y2 = max(box[:, 1]) - image_padding
+                col1 = col_min - image_padding
+                col2 = col_max - image_padding
+                row1 = row_min - image_padding
+                row2 = row_max - image_padding
                 object_detected_img = image.copy()
-                object_detected_img = object_detected_img[y1:y2, x1:x2]
+                object_detected_img = object_detected_img[row1:row2, col1:col2]
 
                 # order the points in the contour such that they appear
                 # in top-left, top-right, bottom-right, and bottom-left
@@ -131,15 +146,15 @@ try:
                 orientation = math.degrees(math.atan((tlblY - trbrY) / (trbrX - tlblX)))
 
                 try:
-                    # images = np.hstack((orig, cv2.resize(myimg, (np.shape(orig)[1], np.shape(orig)[0]))))
-                    images = np.hstack((orig[:, :, 0], edged))
+                    images = np.hstack((orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
+                    # images = np.hstack((orig[:, :, 0], edged))
                 except Exception as e:
                     print(e)
                     continue
 
                 # Show images
                 cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-                cv2.putText(images, "{:1f} sqpixel".format(cv2.contourArea(c)), (remove_pixel, remove_pixel), cv2.FONT_HERSHEY_SIMPLEX,0.65, (255, 255, 255), 2)
+                cv2.putText(images, "{:1f} sqpixel".format(cv2.contourArea(c)), (image_padding*2, image_padding*2), cv2.FONT_HERSHEY_SIMPLEX,0.65, (255, 255, 255), 2)
                 cv2.imshow('RealSense', images)
                 key_press = cv2.waitKey(0)
                 try:
