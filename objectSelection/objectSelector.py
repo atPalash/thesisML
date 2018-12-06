@@ -97,7 +97,7 @@ try:
             col_max = max(box[:, 0])
             row_min = min(box[:, 1])
             row_max = max(box[:, 1])
-            if col_min < 10 or col_max > realsense_img_cols or row_min < 10 or row_max > realsense_img_rows:
+            if col_min < image_padding or col_max > realsense_img_cols or row_min < image_padding or row_max > realsense_img_rows:
                 print "object out of camera view"
                 continue
             else:
