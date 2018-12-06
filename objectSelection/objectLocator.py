@@ -14,9 +14,9 @@ def midpoint(ptA, ptB):
 
 realsense_img_cols = 848
 realsense_img_rows = 480
-list_of_objects = {97: 'objA', 98: 'objB', 99:'objC', 100:'objD'}
+remove_pixel = 0
+list_of_objects = {97: 'objA', 98: 'objB', 99: 'objC', 100: 'objD'}
 image_padding = 10
-
 
 # Configure depth and color streams
 pipeline = rs.pipeline()
@@ -31,7 +31,6 @@ depth_scale = depth_sensor.get_depth_scale()
 
 align_to = rs.stream.color
 align = rs.align(align_to)
-
 for i in range(10):
     pipeline.wait_for_frames()
 
@@ -43,7 +42,7 @@ try:
         aligned_frames = align.process(frames)
         aligned_depth_frame = aligned_frames.get_depth_frame()
         color_frame = frames.get_color_frame()
-        if not aligned_depth_frame or not color_frame:
+        if not color_frame:
             continue
 
         # Convert images to numpy arrays
@@ -56,7 +55,8 @@ try:
         num_rows = depth_image.shape[0]
         num_cols = depth_image.shape[1]
         depth_intrin = aligned_depth_frame.profile.as_video_stream_profile().intrinsics
-        image = color_image
+        # image = color_image[10: 460, 10:620]
+        image = color_image[remove_pixel: rows - remove_pixel, remove_pixel: columns - remove_pixel]
         image_bordered = cv2.copyMakeBorder(image, image_padding, image_padding, image_padding, image_padding,
                                             cv2.BORDER_REPLICATE)
         # load the image, convert it to grayscale, and blur it slightly
@@ -134,6 +134,7 @@ try:
                                                                  y=int(depth_point_in_meters_camera_coords[1] * 100)),
                                 (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX,
                                 0.65, (255, 255, 255), 2)
+
                 # unpack the ordered bounding box, then compute the midpoint
                 # between the top-left and top-right coordinates, followed by
                 # the midpoint between bottom-left and bottom-right coordinates
@@ -149,9 +150,9 @@ try:
 
                 # draw the  midpoints on the image
                 cv2.circle(orig, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
-                cv2.circle(orig, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
-                cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
-                cv2.circle(orig, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
+                # cv2.circle(orig, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
+                # cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
+                # cv2.circle(orig, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
 
                 # draw lines between the midpoints
                 cv2.line(orig, (int(tltrX), int(tltrY)), (int(blbrX), int(blbrY)),
@@ -169,11 +170,13 @@ try:
 
                 # Show images
                 cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-                cv2.putText(images, "{:1f} sqpixel".format(cv2.contourArea(c)), (image_padding*2, image_padding*2), cv2.FONT_HERSHEY_SIMPLEX,0.65, (255, 255, 255), 2)
+                cv2.putText(images, "{:1f} sqpixel".format(cv2.contourArea(c)), (image_padding * 2, image_padding * 2),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
                 cv2.imshow('RealSense', images)
                 key_press = cv2.waitKey(0)
                 try:
-                    cv2.imwrite('images/' + list_of_objects[key_press] + '/' + list_of_objects[key_press] + str(randint(0,100)) + '.png', object_detected_img)
+                    cv2.imwrite('images/' + list_of_objects[key_press] + '/' + list_of_objects[key_press] + str(
+                        randint(0, 100)) + '.png', object_detected_img)
                 except:
                     print 'this object is not in list, press A, B, C or D'
                     continue
