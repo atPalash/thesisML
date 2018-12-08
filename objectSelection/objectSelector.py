@@ -17,7 +17,7 @@ def get_pcd(pixel_x, pixel_y):
     depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin, [int(x), int(y)], depth)
 
 
-realsense_img_cols = 848
+realsense_img_cols = 640
 realsense_img_rows = 480
 list_of_objects = {97: 'objA', 98: 'objB', 99:'objC', 100:'objD'}
 image_padding = 10
