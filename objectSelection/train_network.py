@@ -26,7 +26,7 @@ import os
 list_of_objects = {'objA': 0, 'objB': 1, 'objC': 2, 'objD': 3}
 # initialize the number of epochs to train for, initia learning rate,
 # and batch size
-EPOCHS = 10
+EPOCHS = 30
 INIT_LR = 1e-3
 BS = 10
 IM_SIZE = 200
@@ -34,7 +34,7 @@ IM_SIZE = 200
 print("[INFO] loading images...")
 data = []
 labels = []
-classes = 2
+classes = 4
 # grab the image paths and randomly shuffle them
 imagePaths = sorted(list(paths.list_images('images')))
 random.seed(42)
@@ -42,23 +42,19 @@ random.shuffle(imagePaths)
 count = 0
 
 # loop over the input images
-image_names = []
 for imagePath in imagePaths:
     # load the image, pre-process it, and store it in the data list
     label = imagePath.split(os.path.sep)[1]
-    if label == 'objA' or label == 'objB':
+    image_type = imagePath.split(os.path.sep)[2].split('_')[1]
+    if image_type == 'RGB.png':
         image = cv2.imread(imagePath)
         image = cv2.resize(image, (IM_SIZE, IM_SIZE))
-        cv2.imshow('image', image)
         image = img_to_array(image)
-        image_names.append(imagePath)
         data.append(image)
-
         # extract the class label from the image path and update the
         # labels list
         label = list_of_objects[label]
         labels.append(label)
-        cv2.waitKey(0)
 # scale the raw pixel intensities to the range [0, 1]
 data = np.array(data, dtype="float") / 255.0
 labels = np.array(labels)
@@ -95,7 +91,7 @@ H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
 
 # save the model to disk
 print("[INFO] serializing network...")
-model.save('objectDetector.model')
+model.save('objectDetector2.model')
 
 # plot the training loss and accuracy
 plt.style.use("ggplot")

@@ -12,6 +12,11 @@ def midpoint(ptA, ptB):
     return (ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5
 
 
+def get_pcd(pixel_x, pixel_y):
+    depth = aligned_depth_frame.get_distance(int(pixel_x), int(pixel_y))
+    depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin, [int(x), int(y)], depth)
+
+
 realsense_img_cols = 848
 realsense_img_rows = 480
 list_of_objects = {97: 'objA', 98: 'objB', 99:'objC', 100:'objD'}
@@ -108,12 +113,22 @@ try:
                 print "object out of camera view"
                 continue
             else:
-                col1 = col_min - image_padding
-                col2 = col_max - image_padding
-                row1 = row_min - image_padding
-                row2 = row_max - image_padding
-                object_detected_img = image.copy()
+                col1 = col_min
+                col2 = col_max
+                row1 = row_min
+                row2 = row_max
+                object_detected_img = image_bordered.copy()
                 object_detected_img = object_detected_img[row1:row2, col1:col2]
+                edge_detected_img = edged.copy()
+                edge_detected_img = edge_detected_img[row1:row2, col1:col2]
+                # RGB_depth_detected_img = image.copy()
+                # for row in range(row1, row2, 1):
+                #     for col in range(col1, col2, 1):
+                #         depth = aligned_depth_frame.get_distance(int(col), int(row))
+                #         depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin,
+                #                                                                               [int(x), int(y)],
+                #                                                                               depth)
+                #         RGB_depth_detected_img =
 
                 # order the points in the contour such that they appear
                 # in top-left, top-right, bottom-right, and bottom-left
@@ -178,7 +193,13 @@ try:
                 cv2.imshow('RealSense', images)
                 key_press = cv2.waitKey(0)
                 try:
-                    cv2.imwrite('images/' + list_of_objects[key_press] + '/' + list_of_objects[key_press] + str(randint(0,100)) + '.png', object_detected_img)
+                    random_int = str(randint(0, 1000))
+                    cv2.imwrite('images/' + list_of_objects[key_press] + '/' + list_of_objects[key_press] +
+                                random_int + '_RGB.png', object_detected_img)
+                    cv2.imwrite('images/' + list_of_objects[key_press] + '/' + list_of_objects[key_press] +
+                                random_int + '_EDGED.png', edge_detected_img)
+                    # cv2.imwrite('images/' + list_of_objects[key_press] + '/' + list_of_objects[key_press] +
+                    #             random_int + '_PCD.png', object_detected_img)
                 except:
                     print 'this object is not in list, press A, B, C or D'
                     continue

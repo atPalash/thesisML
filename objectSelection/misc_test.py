@@ -1,10 +1,11 @@
-import numpy as np
+import os
 
-labels = [0, 1, 5, 6]
-image_names = ['objB', 'objA', 'objD', 'objC']
-DAT = np.column_stack((image_names, labels))
-np.savetxt('file_numpy.txt', DAT, delimiter=" ", fmt="%s")
+from imutils import paths
 
-# x = y = z = np.arange(0.0,5.0,1.0)
-# np.savetxt('test.out', x, delimiter=',')   # X is an array
+imagePaths = sorted(list(paths.list_images('images')))
 
+for imagePath in imagePaths:
+    test_arr = imagePath.split(os.path.sep)[2].split('_')
+    if len(imagePath.split(os.path.sep)[2].split('_')) == 1:
+        name = test_arr[0].split('.')[0] + '_RGB.png'
+        os.rename(imagePath, imagePath.split(os.path.sep)[0] + '/' + imagePath.split(os.path.sep)[1] + '/' + name)
