@@ -20,7 +20,7 @@ class RealSenseCamera:
         self.realsense_img_rows = realsense_image_rows
         self.realsense_image_padding = realsense_image_padding
         self.list_of_objects = object_list
-        self.reference_pixel = (realsense_img_cols / 2, realsense_img_rows / 2)
+        self.reference_pixel = (realsense_img_rows / 2, realsense_img_cols / 2)
         self.reference_pixel_padding = 10
         self.reference_pixel_depth = 0
 
@@ -51,8 +51,10 @@ class RealSenseCamera:
         start_pix_y = self.reference_pixel[1] - self.reference_pixel_padding / 2
         end_pix_y = self.reference_pixel[1] + self.reference_pixel_padding / 2
         image = image[start_pix_x: end_pix_x, start_pix_y: end_pix_y]
+        # cv2.imshow('refImg', image)
+        # cv2.waitKey(0)
         data = self.get_image_bgrd(image, start_pix_x, start_pix_y)
-        reference_pixel_height = np.average(np.average(data[:, :, 3]))
+        reference_pixel_height = np.average(np.average(data))
 
         return reference_pixel_height
 
@@ -93,34 +95,48 @@ class RealSenseCamera:
         return []
 
     # getting BGRD data for a image
-    def get_image_bgrd(self, image, pix_coordinate_x, pix_coordinate_y):
+    def get_image_bgrd(self, image, pix_coordinate_col, pix_coordinate_row):
+
         depth_intrin = self.aligned_depth_frame.profile.as_video_stream_profile().intrinsics
-        image_bgrd = np.zeros([np.shape(image)[0], np.shape(image)[1], 4])
-        for pixel_coordinate_x in range(np.shape(image)[0]):
-            for pixel_coordinate_y in range(np.shape(image)[1]):
-                pixel_bgrd = []
+        image_depth = np.zeros([np.shape(image)[0], np.shape(image)[1]])
+        cv2.imshow('img', image)
+        cv2.waitKey(0)
+        for pixel_coordinate_col in range(np.shape(image)[1]):
+            for pixel_coordinate_row in range(np.shape(image)[0]):
+                # pixel_bgrd = []
                 # image padding is removed to receive correct distance
                 depth = self.aligned_depth_frame.get_distance(
-                    int(pixel_coordinate_x) + pix_coordinate_x - self.realsense_image_padding,
-                    int(pixel_coordinate_y) + pix_coordinate_y - self.realsense_image_padding)
+                    int(pixel_coordinate_col) + pix_coordinate_col - self.realsense_image_padding,
+                    int(pixel_coordinate_row) + pix_coordinate_row - self.realsense_image_padding)
                 depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin,
                                                                                       [int(
-                                                                                          pixel_coordinate_x) + pix_coordinate_x,
+                                                                                          pixel_coordinate_col) + pix_coordinate_col,
                                                                                        int(
-                                                                                           pixel_coordinate_y) + pix_coordinate_y],
+                                                                                           pixel_coordinate_row) + pix_coordinate_row],
                                                                                       depth)
 
-                pixel_bgrd.append(image[pixel_coordinate_x][pixel_coordinate_y][0])  # B
-                pixel_bgrd.append(image[pixel_coordinate_x][pixel_coordinate_y][1])  # G
-                pixel_bgrd.append(image[pixel_coordinate_x][pixel_coordinate_y][2])  # R
-                pixel_bgrd.append(depth_point_in_meters_camera_coords[2])  # D
-                image_bgrd[pixel_coordinate_x, pixel_coordinate_y, :] = pixel_bgrd
-        return image_bgrd
+                # pixel_bgrd.append(image[pixel_coordinate_x][pixel_coordinate_y][0])  # B
+                # pixel_bgrd.append(image[pixel_coordinate_x][pixel_coordinate_y][1])  # G
+                # pixel_bgrd.append(image[pixel_coordinate_x][pixel_coordinate_y][2])  # R
+                # pixel_bgrd.append(depth_point_in_meters_camera_coords[2])  # D
+                if depth_point_in_meters_camera_coords[2]>2:
+                    print 'error'
+
+                image_depth[pixel_coordinate_row, pixel_coordinate_col] = depth_point_in_meters_camera_coords[2]  # D
+                # image_bgrd[pixel_coordinate_x, pixel_coordinate_y, :] = pixel_bgrd
+                # cv2.circle(image, (int(pixel_coordinate_col), int(pixel_coordinate_row)), 5, (0, 255, 0), -1)
+        cv2.imshow('test', image_depth)
+        cv2.waitKey(0)
+        norm = np.amax(image_depth)
+        image_depth[:,:] = image_depth[:,:]*(255/norm)
+
+
+        return image_depth
 
     def get_image_bgrd_wrt_surface(self, BGRD_image):
-        for col in range(np.shape(BGRD_image)[0]):
-            for row in range(np.shape(BGRD_image)[1]):
-                BGRD_image[col][row][3] = self.reference_pixel_depth - BGRD_image[col][row][3]
+        for col in range(np.shape(BGRD_image)[1]):
+            for row in range(np.shape(BGRD_image)[0]):
+                BGRD_image[row, col] = self.reference_pixel_depth - BGRD_image[row, col]
 
         return BGRD_image
 
@@ -147,9 +163,9 @@ class RealSenseCamera:
 
                 # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
                 # depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
-                [rows, columns, channel] = np.shape(color_image)
-                num_rows = depth_image.shape[0]
-                num_cols = depth_image.shape[1]
+                # [rows, columns, channel] = np.shape(color_image)
+                # num_rows = depth_image.shape[0]
+                # num_cols = depth_image.shape[1]
 
                 image = color_image
                 # creating border around the received image
@@ -203,11 +219,13 @@ class RealSenseCamera:
                         print "object out of camera view"
                         continue
                     else:
-                        self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig)
+                        # self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig)
                         object_detected_img = image_bordered.copy()
                         object_detected_img = object_detected_img[row_min:row_max, col_min:col_max]
+
                         edge_detected_img = edged.copy()
                         edge_detected_img = edge_detected_img[row_min:row_max, col_min:col_max]
+
                         BGRD_detected_img = object_detected_img.copy()
                         BGRD_detected_img = self.get_image_bgrd(BGRD_detected_img, col_min, row_min)
                         BGRD_detected_img = self.get_image_bgrd_wrt_surface(BGRD_detected_img)
@@ -313,7 +331,7 @@ if __name__ == "__main__":
     realsense_img_rows = 480
     list_of_objects = {97: 'objA', 98: 'objB', 99: 'objC', 100: 'objD'}
     image_padding = 10
-    reference_pix = (530, 250)
+    reference_pix = (40, 40)
     padding_around_reference_pix = 10
     camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding)
     camera.set_reference_pixel(reference_pix)
