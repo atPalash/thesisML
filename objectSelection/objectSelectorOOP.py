@@ -8,6 +8,10 @@ import imutils
 from imutils import perspective
 from imutils import contours
 from random import randint
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.cbook import get_sample_data
+from matplotlib._png import read_png
 
 
 class RealSenseCamera:
@@ -177,7 +181,6 @@ class RealSenseCamera:
                         continue
 
                     orig = image_bordered.copy()
-                    self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig)
 
                     cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
                              (self.realsense_image_padding, self.realsense_img_rows), (0, 0, 255), 20)
@@ -200,6 +203,7 @@ class RealSenseCamera:
                         print "object out of camera view"
                         continue
                     else:
+                        self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig)
                         object_detected_img = image_bordered.copy()
                         object_detected_img = object_detected_img[row_min:row_max, col_min:col_max]
                         edge_detected_img = edged.copy()
@@ -278,7 +282,6 @@ class RealSenseCamera:
                         cv2.imshow('RealSense', images)
                         key_press = cv2.waitKey(0)
                         self.write_data(key_press, object_detected_img, edge_detected_img, BGRD_detected_img)
-
         finally:
 
             # Stop streaming
@@ -293,7 +296,7 @@ class RealSenseCamera:
                         random_int + '_EDGED.png', edge_detected_img)
             # np.asarray(BGRD_detected_img)
             file = h5py.File('images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
-                       random_int + '_BGRD.h5', 'w')
+                             random_int + '_BGRD.h5', 'w')
             print np.shape(BGRD_detected_img)
             data_set = file.create_dataset('BGRD', data=BGRD_detected_img)
 
@@ -310,7 +313,7 @@ if __name__ == "__main__":
     realsense_img_rows = 480
     list_of_objects = {97: 'objA', 98: 'objB', 99: 'objC', 100: 'objD'}
     image_padding = 10
-    reference_pix = (40, 40)
+    reference_pix = (530, 250)
     padding_around_reference_pix = 10
     camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding)
     camera.set_reference_pixel(reference_pix)
