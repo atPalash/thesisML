@@ -7,8 +7,9 @@ from keras.layers.core import Activation
 from keras.layers.core import Flatten
 from keras.layers.core import Dense
 from keras import backend as K
-from keras.applications import ResNet50
+from keras.applications import VGG16
 
+window_size = 3
 
 class LeNet:
     @staticmethod
@@ -20,29 +21,39 @@ class LeNet:
         # if we are using "channels first", update the input shape
         if K.image_data_format() == "channels_first":
             inputShape = (depth, height, width)
+        # # first set of CONV => RELU => POOL layers
+        # model.add(Conv2D(3, (5, 5), padding="same",
+        #                  input_shape=inputShape))
+        # model.add(Activation("relu"))
+        # model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
-        # conv_base = ResNet50(weights='imagenet', include_top=False, input_shape=inputShape)
+        # conv_base = VGG16(weights='imagenet', include_top=False, input_shape=(200, 200, 3))
         #
         # model.add(conv_base)
 
         # first set of CONV => RELU => POOL layers
-        model.add(Conv2D(20, (5, 5), padding="same",
+
+        model.add(Conv2D(20, (window_size, window_size), padding="same",
                          input_shape=inputShape))
         model.add(Activation("relu"))
-        model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+        model.add(MaxPooling2D(pool_size=(window_size, window_size), strides=(2, 2)))
         # model.add(layers.Dropout(0.5))
         # second set of CONV => RELU => POOL layers
-        model.add(Conv2D(50, (5, 5), padding="same"))
+        model.add(Conv2D(50, (window_size, window_size), padding="same"))
         model.add(Activation("relu"))
-        model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-        # model.add(layers.Dropout(0.5))
-        model.add(Conv2D(50, (5, 5), padding="same"))
+        model.add(MaxPooling2D(pool_size=(window_size, window_size), strides=(2, 2)))
+        # # model.add(layers.Dropout(0.5))
+        model.add(Conv2D(50, (window_size, window_size), padding="same"))
         model.add(Activation("relu"))
-        model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+        model.add(MaxPooling2D(pool_size=(window_size, window_size), strides=(2, 2)))
 
-        model.add(Conv2D(50, (5, 5), padding="same"))
+        model.add(Conv2D(50, (window_size, window_size), padding="same"))
         model.add(Activation("relu"))
-        model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+        model.add(MaxPooling2D(pool_size=(window_size, window_size), strides=(2, 2)))
+
+        # model.add(Conv2D(50, (window_size, window_size), padding="same"))
+        # model.add(Activation("relu"))
+        # model.add(MaxPooling2D(pool_size=(window_size, window_size), strides=(2, 2)))
         # first (and only) set of FC => RELU layers
         model.add(Flatten())
         model.add(Dense(500))
@@ -54,22 +65,3 @@ class LeNet:
 
         # return the constructed network architecture
         return model
-
-        # # first (and only) set of FC => RELU layers
-        # model.add(Flatten())
-        # model.add(Dense(500))
-        # model.add(Activation("relu"))
-        # model.add(layers.Dropout(0.5))
-        #
-        # # softmax classifier
-        # model.add(Dense(classes))
-        # model.add(Activation("softmax"))
-        # print('This is the number of trainable weights '
-        #       'before freezing the conv base:', len(model.trainable_weights))
-        # conv_base.trainable = False
-        # print('This is the number of trainable weights '
-        #       'after freezing the conv base:', len(model.trainable_weights))
-        #
-        # print model.summary()
-        # # return the constructed network architecture
-        # return model

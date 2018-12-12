@@ -13,6 +13,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from keras.preprocessing.image import img_to_array
 from keras.utils import to_categorical
+from keras.callbacks import ModelCheckpoint
 from pyimagesearch.lenet import LeNet
 from imutils import paths
 import matplotlib.pyplot as plt
@@ -32,34 +33,55 @@ BS = 10
 IM_SIZE = 200
 # initialize the data and labels
 print("[INFO] loading images...")
-data = []
 labels = []
+data = []
 classes = 4
 # grab the image paths and randomly shuffle them
 imagePaths = sorted(list(paths.list_images('images')))
-random.seed(42)
-random.shuffle(imagePaths)
+# random.seed(42)
+# random.shuffle(imagePaths)
 count = 0
 
+images = {}
+image_BGRD = np.zeros((200, 200, 5))
 # loop over the input images
 for imagePath in imagePaths:
     # load the image, pre-process it, and store it in the data list
     label = imagePath.split(os.path.sep)[1]
-    image_type = imagePath.split(os.path.sep)[2].split('_')[1]
-    if image_type == 'RGB.png':
-        image = cv2.imread(imagePath)
-        image = cv2.resize(image, (IM_SIZE, IM_SIZE))
-        image = img_to_array(image)
-        data.append(image)
+    image = imagePath.split(os.path.sep)[2].split('_')
+
+    if image[1] == 'RGB.png':
+        image_rgb = cv2.imread(imagePath)
+        image_rgb = cv2.resize(image_rgb, (IM_SIZE, IM_SIZE))
+        # image_rgb = img_to_array(image_rgb)
+        image_BGRD[:, :, 0:3] = image_rgb
+        count = count + 1
+    if image[1] == 'DEPTH.png':
+        image_depth = cv2.imread(imagePath)
+        image_depth = cv2.cvtColor(image_depth, cv2.COLOR_BGR2GRAY)
+        image_depth = cv2.resize(image_depth, (IM_SIZE, IM_SIZE))
+        # image_depth = img_to_array(image_depth)
+        image_BGRD[:, :, 3] = image_depth
+        count = count + 1
+    if image[1] == 'EDGED.png':
+        image_edged = cv2.imread(imagePath)
+        image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
+        image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
+        # image_depth = img_to_array(image_depth)
+        image_BGRD[:, :, 4] = image_edged
+        count = count + 1
+    if count == 3:
+        data.append(image_BGRD)
+        image_BGRD = np.zeros((200, 200, 5))
         # extract the class label from the image path and update the
         # labels list
         label = list_of_objects[label]
         labels.append(label)
+        count = 0
+
 # scale the raw pixel intensities to the range [0, 1]
 data = np.array(data, dtype="float") / 255.0
 labels = np.array(labels)
-# write_data = np.column_stack((image_names, labels))
-# np.savetxt('write_data.xlsx', write_data, delimiter=" ", fmt="%s")
 
 # partition the data into training and testing splits using 75% of
 # the data for training and the remaining 25% for testing
@@ -78,20 +100,26 @@ aug = ImageDataGenerator(rotation_range=90, width_shift_range=0.1,
 
 # initialize the model
 print("[INFO] compiling model...")
-model = LeNet.build(width=IM_SIZE, height=IM_SIZE, depth=3, classes=classes)
+model = LeNet.build(width=IM_SIZE, height=IM_SIZE, depth=5, classes=classes)
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
+print model.summary()
 model.compile(loss="categorical_crossentropy", optimizer=opt,
               metrics=["accuracy"])
+
+# checkpoint best model
+filepath = "models/weights_best.hdf5"
+checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+callbacks_list = [checkpoint]
 
 # train the network
 print("[INFO] training network...")
 H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
                         validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,
-                        epochs=EPOCHS, verbose=1)
+                        epochs=EPOCHS, verbose=1, callbacks=callbacks_list)
 
 # save the model to disk
 print("[INFO] serializing network...")
-model.save('objectDetector2.model')
+model.save('objectDetector.model')
 
 # plot the training loss and accuracy
 plt.style.use("ggplot")

@@ -16,24 +16,51 @@ classes = 4
 # load the trained convolutional neural network
 print("[INFO] loading network..."
       "")
-model = load_model('objectDetector2.model')
+model = load_model('models/weights_best.hdf5')
+
 print model.summary()
 list_of_objects = {0: 'objA', 1: 'objB', 2: 'objC', 3: 'objD'}
-for imagePath in imagePaths:
-    image_type = imagePath.split(os.path.sep)[2].split('_')[1]
-    if image_type == 'RGB.png':
-        # load the image
-        image = cv2.imread(imagePath)
-        orig = image.copy()
+count = 0
+IM_SIZE = 200
 
-        # pre-process the image for classification
-        image = cv2.resize(image, (200, 200))
-        image = image.astype("float") / 255.0
-        image = img_to_array(image)
-        image = np.expand_dims(image, axis=0)
+images = {}
+image_BGRD = np.zeros((200, 200, 5))
+# loop over the input images
+for imagePath in imagePaths:
+    # load the image, pre-process it, and store it in the data list
+    label = imagePath.split(os.path.sep)[1]
+    image = imagePath.split(os.path.sep)[2].split('_')
+
+    if image[1] == 'RGB.png':
+        image_rgb = cv2.imread(imagePath)
+        orig = image_rgb.copy()
+        image_rgb = cv2.resize(image_rgb, (IM_SIZE, IM_SIZE))
+        # image_rgb = img_to_array(image_rgb)
+        image_BGRD[:, :, 0:3] = image_rgb
+        count = count + 1
+    if image[1] == 'DEPTH.png':
+        image_depth = cv2.imread(imagePath)
+        image_depth = cv2.cvtColor(image_depth, cv2.COLOR_BGR2GRAY)
+        image_depth = cv2.resize(image_depth, (IM_SIZE, IM_SIZE))
+        # image_depth = img_to_array(image_depth)
+        image_BGRD[:, :, 3] = image_depth
+        count = count + 1
+    if image[1] == 'EDGED.png':
+        image_edged = cv2.imread(imagePath)
+        image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
+        image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
+        # image_depth = img_to_array(image_depth)
+        image_BGRD[:, :, 4] = image_edged
+        count = count + 1
+    if count == 3:
+        image_BGRD = cv2.resize(image_BGRD, (200, 200))
+        image_BGRD = image_BGRD.astype("float") / 255.0
+        image_BGRD = img_to_array(image_BGRD)
+        image_BGRD = np.expand_dims(image_BGRD, axis=0)
+
 
         # classify the input image
-        predictions = model.predict(image)
+        predictions = model.predict(image_BGRD)
 
         predictions = list(predictions[0])
         label = predictions.index(max(predictions))
@@ -48,4 +75,8 @@ for imagePath in imagePaths:
 
         # show the output image
         cv2.imshow("Output", output)
+
         cv2.waitKey(0)
+        count = 0
+        image_BGRD = np.zeros((200, 200, 5))
+
