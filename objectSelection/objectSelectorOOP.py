@@ -9,11 +9,6 @@ import math
 import imutils
 from imutils import perspective
 from imutils import contours
-from random import randint
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.cbook import get_sample_data
-from matplotlib._png import read_png
 
 
 class RealSenseCamera:

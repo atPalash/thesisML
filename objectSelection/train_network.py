@@ -41,9 +41,9 @@ imagePaths = sorted(list(paths.list_images('images')))
 # random.seed(42)
 # random.shuffle(imagePaths)
 count = 0
-
+depth = 5
 images = {}
-image_BGRD = np.zeros((200, 200, 5))
+image_BGRD = np.zeros((200, 200, depth))
 # loop over the input images
 for imagePath in imagePaths:
     # load the image, pre-process it, and store it in the data list
@@ -72,7 +72,7 @@ for imagePath in imagePaths:
         count = count + 1
     if count == 3:
         data.append(image_BGRD)
-        image_BGRD = np.zeros((200, 200, 5))
+        image_BGRD = np.zeros((200, 200, depth))
         # extract the class label from the image path and update the
         # labels list
         label = list_of_objects[label]
@@ -100,14 +100,14 @@ aug = ImageDataGenerator(rotation_range=90, width_shift_range=0.1,
 
 # initialize the model
 print("[INFO] compiling model...")
-model = LeNet.build(width=IM_SIZE, height=IM_SIZE, depth=5, classes=classes)
+model = LeNet.build(width=IM_SIZE, height=IM_SIZE, depth=depth, classes=classes)
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
 print model.summary()
 model.compile(loss="categorical_crossentropy", optimizer=opt,
               metrics=["accuracy"])
 
 # checkpoint best model
-filepath = "models/weights_best.hdf5"
+filepath = "models/weights_best_RGB_DEPTH.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint]
 

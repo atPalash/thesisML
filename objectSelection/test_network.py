@@ -16,15 +16,15 @@ classes = 4
 # load the trained convolutional neural network
 print("[INFO] loading network..."
       "")
-model = load_model('models/weights_best.hdf5')
+model = load_model('models/weights_best_RGB_DEPTH.hdf5')
 
 print model.summary()
 list_of_objects = {0: 'objA', 1: 'objB', 2: 'objC', 3: 'objD'}
 count = 0
 IM_SIZE = 200
-
+depth = 5
 images = {}
-image_BGRD = np.zeros((200, 200, 5))
+image_BGRD = np.zeros((200, 200, depth))
 # loop over the input images
 for imagePath in imagePaths:
     # load the image, pre-process it, and store it in the data list
@@ -78,5 +78,6 @@ for imagePath in imagePaths:
 
         cv2.waitKey(0)
         count = 0
-        image_BGRD = np.zeros((200, 200, 5))
+
+        image_BGRD = np.zeros((200, 200, depth))
 
