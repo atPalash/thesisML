@@ -1,5 +1,5 @@
+import sys
 import math
-
 import numpy as np
 import cv2
 from imutils import paths
@@ -62,17 +62,9 @@ class ReebGraph:
                     self.col_const_row.append([row, col, -1])
 
         if len(self.row_const_col) > len(self.col_const_row):
-            # for itr in range(0, len(self.row_const_col) - 1, 2):
-            #     cv2.circle(self.mask_image,
-            #                (self.row_const_col[itr][1],
-            #                 int((self.row_const_col[itr][0] + self.row_const_col[itr + 1][0]) / 2)
-            #                 ), 1, (0, 255, 255), -1)
             print 'row varies col constant'
             self.find_suitable_gripping_pts(True, False)
         else:
-            # for itr in range(0, len(self.col_const_row) - 1, 2):
-            #     cv2.circle(self.mask_image, (int((self.col_const_row[itr][1] + self.col_const_row[itr + 1][1]) / 2),
-            #                                  self.col_const_row[itr][0]), 1, (0, 255, 255), -1)
             print 'col varies row constant'
             self.find_suitable_gripping_pts(False, True)
 
@@ -87,7 +79,7 @@ class ReebGraph:
                 for itr2 in range(0, np.shape(self.mask_image)[0] - 1):
                     if int(abs(self.mask_image[itr2][mid_pt[1]] - self.mask_image[itr2 + 1][mid_pt[1]])) is 1:
                         curvature = curvature + 1
-                if curvature < 3:
+                if curvature < 3 and thickness < self.gripper_width:
                     pt_info.append(mid_pt)
                     pt_info.append(thickness)
                     suitable_points.append(pt_info)
@@ -101,17 +93,36 @@ class ReebGraph:
                 for itr2 in range(0, np.shape(self.mask_image)[1] - 1):
                     if int(abs(self.mask_image[mid_pt[0]][itr2] - self.mask_image[mid_pt[0]][itr2 + 1])) is 1:
                         curvature = curvature + 1
-                if curvature < 3:
+                if curvature < 3 and thickness < self.gripper_width:
                     pt_info.append(mid_pt)
                     pt_info.append(thickness)
                     suitable_points.append(pt_info)
+        selected_pts = []
+        # sel_pts = []
+        for pt in suitable_points:
+            selected_pts.append(pt[0])
+            # sel_pts.append(pt[0])
+            cv2.circle(self.mask_image, (pt[0][1], pt[0][0]), 1, (0, 255, 255), -1)
 
-        for pts in suitable_points:
-            cv2.circle(self.mask_image, (pts[0][1], pts[0][0]), 1, (0, 255, 255), -1)
-        print 'done'
+        for itr in range(len(selected_pts)):
+            nearest = selected_pts[self.closest_pt(selected_pts[itr], selected_pts)]
+            suitable_points[itr].append(nearest)
+            orientation = math.degrees(math.atan2(suitable_points[itr][0][0] - suitable_points[itr][2][0],
+                                                  suitable_points[itr][0][1] - suitable_points[itr][2][1]))
+            suitable_points[itr].append(orientation)
         cv2.imshow('masked image', self.mask_image)
         cv2.waitKey(0)
 
+    def closest_pt(self, pt, sel_pts):
+        min = sys.maxint
+        index = -1
+        for i in range(len(sel_pts)):
+            dist_2 = (sel_pts[i][0] - pt[0])**2 + (sel_pts[i][1] - pt[1])**2
+            if dist_2 != 0 and dist_2 < min:
+                min = dist_2
+                index = i
+        return index
+
 if __name__ == "__main__":
-    rg = ReebGraph('images/objA/', 3, 80, 5, 100)
+    rg = ReebGraph('images/objA/', 3, 80, 5, 20)
     rg.get_image_contour()
