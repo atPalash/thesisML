@@ -105,24 +105,26 @@ class ReebGraph:
             cv2.circle(self.mask_image, (pt[0][1], pt[0][0]), 1, (0, 255, 255), -1)
 
         for itr in range(len(selected_pts)):
-            nearest = selected_pts[self.closest_pt(selected_pts[itr], selected_pts)]
-            suitable_points[itr].append(nearest)
+            nearest = self.contour[self.closest_pt(selected_pts[itr], self.contour)]
+            suitable_points[itr].append((nearest[0][0], nearest[0][1]))
             orientation = math.degrees(math.atan2(suitable_points[itr][0][0] - suitable_points[itr][2][0],
                                                   suitable_points[itr][0][1] - suitable_points[itr][2][1]))
             suitable_points[itr].append(orientation)
         cv2.imshow('masked image', self.mask_image)
         cv2.waitKey(0)
+        print 'gog'
 
     def closest_pt(self, pt, sel_pts):
         min = sys.maxint
         index = -1
         for i in range(len(sel_pts)):
-            dist_2 = (sel_pts[i][0] - pt[0])**2 + (sel_pts[i][1] - pt[1])**2
+            dist_2 = (sel_pts[i][0][0] - pt[0])**2 + (sel_pts[i][0][1] - pt[1])**2
             if dist_2 != 0 and dist_2 < min:
                 min = dist_2
                 index = i
         return index
 
+
 if __name__ == "__main__":
-    rg = ReebGraph('images/objA/', 3, 80, 5, 20)
+    rg = ReebGraph('images/objD/', 3, 80, 5, 20)
     rg.get_image_contour()
