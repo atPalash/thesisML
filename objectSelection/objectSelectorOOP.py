@@ -9,7 +9,7 @@ from imutils import contours
 
 
 class RealSenseCamera:
-    def __init__(self, object_list, realsense_image_cols=848, realsense_image_rows=480, realsense_image_padding=10):
+    def __init__(self, object_list=None, realsense_image_cols=848, realsense_image_rows=480, realsense_image_padding=10):
         self.realsense_img_cols = realsense_image_cols
         self.realsense_img_rows = realsense_image_rows
         self.realsense_image_padding = realsense_image_padding
@@ -252,94 +252,97 @@ class RealSenseCamera:
                         edge_detected_img = edged.copy()
                         edge_detected_img = edge_detected_img[row_min:row_max, col_min:col_max]
 
-                        # receive image depth for each pixel in the selected object area
-                        BGRD_detected_img = object_detected_img.copy()
-                        BGRD_detected_img = self.get_image_depth_all_pixel(BGRD_detected_img, col_min, row_min, False)
+                        if self.list_of_objects is None:
+                            return [object_detected_img, edge_detected_img, c]
+                        else:
+                            # receive image depth for each pixel in the selected object area
+                            BGRD_detected_img = object_detected_img.copy()
+                            BGRD_detected_img = self.get_image_depth_all_pixel(BGRD_detected_img, col_min, row_min, False)
 
-                        # order the points in the contour such that they appear in top-left, top-right, bottom-right,
-                        # and bottom-left order, then draw the outline of the rotated bounding box and draw contours
-                        box = perspective.order_points(box)
-                        cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
+                            # order the points in the contour such that they appear in top-left, top-right, bottom-right,
+                            # and bottom-left order, then draw the outline of the rotated bounding box and draw contours
+                            box = perspective.order_points(box)
+                            cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
 
-                        # loop over the points in the box and draw them, write pixel coordinate or world coordinate by
-                        # changing the commented parts below
-                        for (x, y) in box:
-                            cv2.circle(orig, (int(x), int(y)), 5, (0, 0, 255), -1)
-                            # get XYZ coordinates in camera frame and write on image
-                            xyz = self.get_pixel_bgrd_or_xyz(orig, int(x), int(y), None,  False, True)
+                            # loop over the points in the box and draw them, write pixel coordinate or world coordinate by
+                            # changing the commented parts below
+                            for (x, y) in box:
+                                cv2.circle(orig, (int(x), int(y)), 5, (0, 0, 255), -1)
+                                # get XYZ coordinates in camera frame and write on image
+                                xyz = self.get_pixel_bgrd_or_xyz(orig, int(x), int(y), None,  False, True)
+                                cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
+                                                                           z=int(xyz[2] * 100)), (int(x), int(y)),
+                                            cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 1)
+                                # write image pixel coordinate
+                                # cv2.putText(orig, "({x}, {y})".format(x=x, y=y), (int(x), int(y)),
+                                #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 1)
+
+                            # plot reference pixel in the display image
+                            cv2.circle(orig, (int(self.reference_pixel[0]), int(self.reference_pixel[1])), 5, (0, 255, 0),
+                                       -1)
+
+                            # get reference pixel camera coordiante and write in display image
+                            xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, self.reference_pixel[0],
+                                                             self.reference_pixel[1], None, False, True)
                             cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
-                                                                       z=int(xyz[2] * 100)), (int(x), int(y)),
+                                                                       z=int(xyz[2] * 100)), (int(self.reference_pixel[0]),
+                                                                                              int(self.reference_pixel[1])),
+                                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 1)
+
+                            # write reference pixel image coordinates in display image
+                            # cv2.putText(orig, "({x}, {y})".format(x=int(self.reference_pixel[0]),
+                            # y=int(self.reference_pixel[1])), (int(self.reference_pixel[0]), int(self.reference_pixel[1])),
+                            #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 1)
+
+                            # unpack the ordered bounding box, then compute the midpoint between the top-left and top-right
+                            # coordinates, followed by the midpoint between bottom-left and bottom-right coordinates
+                            (tl, tr, br, bl) = box
+
+                            (tltrX, tltrY) = self.midpoint(tl, tr)
+                            (blbrX, blbrY) = self.midpoint(bl, br)
+
+                            # compute the midpoint between the top-left and top-right points,
+                            # followed by the midpoint between the top-righ and bottom-right
+                            (tlblX, tlblY) = self.midpoint(tl, bl)
+                            (trbrX, trbrY) = self.midpoint(tr, br)
+
+                            (objX, objY) = self.midpoint((tlblX, tlblY), (trbrX, trbrY))
+                            # draw the  midpoints on the image
+                            cv2.circle(orig, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
+                            cv2.circle(orig, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
+                            cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
+                            cv2.circle(orig, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
+                            cv2.circle(orig, (int(objX), int(objY)), 5 * 2, (0, 255, 0), -1)
+
+                            # get XYZ in world coordinate and plot in display image
+                            xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, objX, objY, None, False, True)
+                            cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
+                                                                       z=int(xyz[2] * 100)), (int(objX), int(objY)),
                                         cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 1)
-                            # write image pixel coordinate
-                            # cv2.putText(orig, "({x}, {y})".format(x=x, y=y), (int(x), int(y)),
-                            #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 1)
+                            # draw lines between the midpoints
+                            cv2.line(orig, (int(tltrX), int(tltrY)), (int(blbrX), int(blbrY)),
+                                     (255, 0, 255), 2)
+                            cv2.line(orig, (int(tlblX), int(tlblY)), (int(trbrX), int(trbrY)),
+                                     (255, 0, 255), 2)
+                            orientation = math.degrees(math.atan((tlblY - trbrY) / (trbrX - tlblX)))
 
-                        # plot reference pixel in the display image
-                        cv2.circle(orig, (int(self.reference_pixel[0]), int(self.reference_pixel[1])), 5, (0, 255, 0),
-                                   -1)
+                            # show original image of the workspace and detected object together
+                            try:
+                                images = np.hstack(
+                                    (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
+                                # images = np.hstack((orig[:, :, 0], edged))
+                            except Exception as e:
+                                print(e)
+                                continue
 
-                        # get reference pixel camera coordiante and write in display image
-                        xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, self.reference_pixel[0],
-                                                         self.reference_pixel[1], None, False, True)
-                        cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
-                                                                   z=int(xyz[2] * 100)), (int(self.reference_pixel[0]),
-                                                                                          int(self.reference_pixel[1])),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 1)
-
-                        # write reference pixel image coordinates in display image
-                        # cv2.putText(orig, "({x}, {y})".format(x=int(self.reference_pixel[0]),
-                        # y=int(self.reference_pixel[1])), (int(self.reference_pixel[0]), int(self.reference_pixel[1])),
-                        #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 1)
-
-                        # unpack the ordered bounding box, then compute the midpoint between the top-left and top-right
-                        # coordinates, followed by the midpoint between bottom-left and bottom-right coordinates
-                        (tl, tr, br, bl) = box
-
-                        (tltrX, tltrY) = self.midpoint(tl, tr)
-                        (blbrX, blbrY) = self.midpoint(bl, br)
-
-                        # compute the midpoint between the top-left and top-right points,
-                        # followed by the midpoint between the top-righ and bottom-right
-                        (tlblX, tlblY) = self.midpoint(tl, bl)
-                        (trbrX, trbrY) = self.midpoint(tr, br)
-
-                        (objX, objY) = self.midpoint((tlblX, tlblY), (trbrX, trbrY))
-                        # draw the  midpoints on the image
-                        cv2.circle(orig, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
-                        cv2.circle(orig, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
-                        cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
-                        cv2.circle(orig, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
-                        cv2.circle(orig, (int(objX), int(objY)), 5 * 2, (0, 255, 0), -1)
-
-                        # get XYZ in world coordinate and plot in display image
-                        xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, objX, objY, None, False, True)
-                        cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
-                                                                   z=int(xyz[2] * 100)), (int(objX), int(objY)),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 1)
-                        # draw lines between the midpoints
-                        cv2.line(orig, (int(tltrX), int(tltrY)), (int(blbrX), int(blbrY)),
-                                 (255, 0, 255), 2)
-                        cv2.line(orig, (int(tlblX), int(tlblY)), (int(trbrX), int(trbrY)),
-                                 (255, 0, 255), 2)
-                        orientation = math.degrees(math.atan((tlblY - trbrY) / (trbrX - tlblX)))
-
-                        # show original image of the workspace and detected object together
-                        try:
-                            images = np.hstack(
-                                (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
-                            # images = np.hstack((orig[:, :, 0], edged))
-                        except Exception as e:
-                            print(e)
-                            continue
-
-                        # Show images
-                        cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-                        cv2.putText(images, "{:1f} sqpixel".format(cv2.contourArea(c)),
-                                    (self.realsense_image_padding * 2, self.realsense_image_padding * 2),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
-                        cv2.imshow('RealSense', images)
-                        key_press = cv2.waitKey(0)
-                        self.write_data(key_press, object_detected_img, edge_detected_img, BGRD_detected_img)
+                            # Show images
+                            cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+                            cv2.putText(images, "{:1f} sqpixel".format(cv2.contourArea(c)),
+                                        (self.realsense_image_padding * 2, self.realsense_image_padding * 2),
+                                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
+                            cv2.imshow('RealSense', images)
+                            key_press = cv2.waitKey(0)
+                            self.write_data(key_press, object_detected_img, edge_detected_img, BGRD_detected_img)
         finally:
 
             # Stop streaming
