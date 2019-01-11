@@ -62,32 +62,65 @@ class RealSenseCamera:
 
         self.get_streaming_data()
 
-    # getting BGRD or XYZ data for a pixel
-    def get_pixel_bgrd_or_xyz(self, image, pixel_coordinate_col, pixel_coordinate_row, bgrd = False, coordinate = False):
+    # getting BGRD or XYZ data for a pixel or list of pixel
+    def get_pixel_bgrd_or_xyz(self, image, pixel_coordinate_col=None, pixel_coordinate_row=None, contours=None,
+                              bgrd=False, coordinate=False):
+        # Get camera instrinsics
         depth_intrin = self.aligned_depth_frame.profile.as_video_stream_profile().intrinsics
 
-        # image padding is removed to receive correct distance
-        depth = self.aligned_depth_frame.get_distance(int(pixel_coordinate_col) - self.realsense_image_padding,
-                                                      int(pixel_coordinate_row) - self.realsense_image_padding)
-        depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin,
-                                                                              [int(pixel_coordinate_col),
-                                                                               int(pixel_coordinate_row)], depth)
-        if bgrd:
-            bgrd = [image[pixel_coordinate_row][pixel_coordinate_col][0],  # B
-                    image[pixel_coordinate_row][pixel_coordinate_col][1],  # G
-                    image[pixel_coordinate_row][pixel_coordinate_col][2],  # R
-                    depth_point_in_meters_camera_coords[2]]  # D
-            return bgrd
-        if coordinate:
-            xyz = [depth_point_in_meters_camera_coords[0],  # X
-                   depth_point_in_meters_camera_coords[1],  # Y
-                   depth_point_in_meters_camera_coords[2]]  # Z
-            return xyz
+        # check data type passed
+        if contours is None and pixel_coordinate_col is not None and pixel_coordinate_row is not None:
+            # image padding is removed to receive correct distance
+            depth = self.aligned_depth_frame.get_distance(int(pixel_coordinate_col) - self.realsense_image_padding,
+                                                          int(pixel_coordinate_row) - self.realsense_image_padding)
+            # data with XYZ values is returned wrt camera coordinates
+            depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin,
+                                                                                  [int(pixel_coordinate_col),
+                                                                                   int(pixel_coordinate_row)], depth)
+            if bgrd:
+                bgrd = [image[pixel_coordinate_row][pixel_coordinate_col][0],  # B
+                        image[pixel_coordinate_row][pixel_coordinate_col][1],  # G
+                        image[pixel_coordinate_row][pixel_coordinate_col][2],  # R
+                        depth_point_in_meters_camera_coords[2]]  # D
+                return bgrd
+            if coordinate:
+                xyz = [depth_point_in_meters_camera_coords[0],  # X
+                       depth_point_in_meters_camera_coords[1],  # Y
+                       depth_point_in_meters_camera_coords[2]]  # Z
+                return xyz
+            return []
+        elif contours is not None and pixel_coordinate_row is None and pixel_coordinate_col is None:
+            pt_xyz = []
+            pt_bgrd = []
+            # image padding is removed to receive correct distance
+            for pt in contours:
+                depth = self.aligned_depth_frame.get_distance(int(pt[0]) - self.realsense_image_padding,
+                                                              int(pt[1]) - self.realsense_image_padding)
+                # data with XYZ values is returned wrt camera coordinates
+                depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin,
+                                                                                      [int(pt[0]),
+                                                                                       int(pt[1])], depth)
+                if bgrd:
+                    bgrd = [image[pt[0]][pt[1]][0],  # B
+                            image[pt[0]][pt[1]][1],  # G
+                            image[pt[0]][pt[1]][2],  # R
+                            depth_point_in_meters_camera_coords[2]]  # D
+                    pt_bgrd.append([pt, bgrd])
+                if coordinate:
+                    xyz = [depth_point_in_meters_camera_coords[0],  # X
+                           depth_point_in_meters_camera_coords[1],  # Y
+                           depth_point_in_meters_camera_coords[2]]  # Z
+                    pt_xyz.append([pt, xyz])
 
-        return []
+            if bgrd:
+                return pt_bgrd
+            elif coordinate:
+                return pt_xyz
+        else:
+            return ['error']
 
     # getting BGRD data for a image
-    def get_image_depth_all_pixel(self, image, pix_coordinate_col, pix_coordinate_row, ref):
+    def get_image_depth_all_pixel(self, image, pix_coordinate_col=None, pix_coordinate_row=None, ref=None):
 
         depth_intrin = self.aligned_depth_frame.profile.as_video_stream_profile().intrinsics
         image_depth = np.zeros([np.shape(image)[0], np.shape(image)[1]])
@@ -113,8 +146,8 @@ class RealSenseCamera:
             norm = np.amax(image_depth)
             image_depth[:, :] = image_depth[:, :] * (1000 / norm)
             depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(image_depth, alpha=0.5), cv2.COLORMAP_JET)
-            cv2.imshow('depth_image', depth_colormap)
-            cv2.waitKey(0)
+            # cv2.imshow('depth_image', depth_colormap)
+            # cv2.waitKey(0)
         return image_depth
 
 
@@ -148,7 +181,8 @@ class RealSenseCamera:
                 # num_cols = depth_image.shape[1]
 
                 image = color_image
-                # creating border around the received image
+
+                # creating border around the received image for neglecting objects at image extremes
                 image_bordered = cv2.copyMakeBorder(image, self.realsense_image_padding, self.realsense_image_padding,
                                                     self.realsense_image_padding, self.realsense_image_padding,
                                                     cv2.BORDER_REPLICATE)
@@ -157,8 +191,7 @@ class RealSenseCamera:
                 gray = cv2.cvtColor(image_bordered, cv2.COLOR_BGR2GRAY)
                 gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
-                # perform edge detection, then perform a dilation + erosion to
-                # close gaps in between object edges
+                # perform edge detection, then perform a dilation + erosion to close gaps in between object edges
                 edged = cv2.Canny(gray, 40, 40)
                 edged = cv2.dilate(edged, None, iterations=5)
                 edged = cv2.erode(edged, None, iterations=5)
@@ -168,7 +201,7 @@ class RealSenseCamera:
                                         cv2.CHAIN_APPROX_SIMPLE)
                 cnts = cnts[0] if imutils.is_cv2() else cnts[1]
 
-                # sort the contours from left-to-right and initialize the
+                # sort the contours from left-to-right
                 (cnts, _) = contours.sort_contours(cnts)
 
                 for c in cnts:
@@ -176,8 +209,10 @@ class RealSenseCamera:
                     if cv2.contourArea(c) < 1000:
                         continue
 
+                    # image copy to display results
                     orig = image_bordered.copy()
 
+                    # draw lines on display image to indicate workspace boundary
                     cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
                              (self.realsense_image_padding, self.realsense_img_rows), (0, 0, 255), 20)
                     cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
@@ -186,63 +221,78 @@ class RealSenseCamera:
                              (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
                     cv2.line(orig, (self.realsense_image_padding, self.realsense_img_rows),
                              (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
+
+                    # get the min area bounding box around the object/contour
                     box = cv2.minAreaRect(c)
                     box = cv2.cv.BoxPoints(box) if imutils.is_cv2() else cv2.boxPoints(box)
-
                     box = np.array(box, dtype="int")
+
+                    # get bounding box extremes around the object/contour
                     col_min = min(box[:, 0])
                     col_max = max(box[:, 0])
                     row_min = min(box[:, 1])
                     row_max = max(box[:, 1])
+
+                    # neglect if object is outside the workspace boundary
                     if col_min < self.realsense_image_padding or col_max > self.realsense_img_cols \
                             or row_min < self.realsense_image_padding or row_max > self.realsense_img_rows:
                         print "object out of camera view"
                         continue
                     else:
+                        # Get reference pixel depth
                         self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig, True)
+
+                        # make a copy of RGB image(with border) and crop out the object area as defined by bounding box
+                        # extremes
                         object_detected_img = image_bordered.copy()
                         object_detected_img = object_detected_img[row_min:row_max, col_min:col_max]
 
+                        # make a copy of edged image(with border) and crop out the object area as defined by bounding
+                        # box extremes
                         edge_detected_img = edged.copy()
                         edge_detected_img = edge_detected_img[row_min:row_max, col_min:col_max]
 
+                        # receive image depth for each pixel in the selected object area
                         BGRD_detected_img = object_detected_img.copy()
                         BGRD_detected_img = self.get_image_depth_all_pixel(BGRD_detected_img, col_min, row_min, False)
 
-                        # order the points in the contour such that they appear
-                        # in top-left, top-right, bottom-right, and bottom-left
-                        # order, then draw the outline of the rotated bounding
-                        # box
+                        # order the points in the contour such that they appear in top-left, top-right, bottom-right,
+                        # and bottom-left order, then draw the outline of the rotated bounding box and draw contours
                         box = perspective.order_points(box)
                         cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
 
-                        # loop over the original points and draw them
+                        # loop over the points in the box and draw them, write pixel coordinate or world coordinate by
+                        # changing the commented parts below
                         for (x, y) in box:
                             cv2.circle(orig, (int(x), int(y)), 5, (0, 0, 255), -1)
-                            xyz = self.get_pixel_bgrd_or_xyz(orig, int(x), int(y), True, False)
-                            # cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
-                            #                                            z=int(xyz[2] * 100)), (int(x), int(y)),
-                            #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 1)
-                            cv2.putText(orig, "({x}, {y})".format(x=x, y=y), (int(x), int(y)),
+                            # get XYZ coordinates in camera frame and write on image
+                            xyz = self.get_pixel_bgrd_or_xyz(orig, int(x), int(y), None,  False, True)
+                            cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
+                                                                       z=int(xyz[2] * 100)), (int(x), int(y)),
                                         cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 1)
+                            # write image pixel coordinate
+                            # cv2.putText(orig, "({x}, {y})".format(x=x, y=y), (int(x), int(y)),
+                            #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 1)
 
+                        # plot reference pixel in the display image
                         cv2.circle(orig, (int(self.reference_pixel[0]), int(self.reference_pixel[1])), 5, (0, 255, 0),
                                    -1)
+
+                        # get reference pixel camera coordiante and write in display image
                         xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, self.reference_pixel[0],
-                                                         self.reference_pixel[1], False, True)
-                        # cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
-                        #                                            z=int(xyz[2] * 100)), (int(self.reference_pixel[0]),
-                        #                                                                   int(self.reference_pixel[1])),
-                        #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 1)
-                        cv2.putText(orig,
-                                    "({x}, {y})".format(x=int(self.reference_pixel[0]), y=int(self.reference_pixel[1]),
-                                                        ), (int(self.reference_pixel[0]),
-                                                            int(self.reference_pixel[1])),
+                                                         self.reference_pixel[1], None, False, True)
+                        cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
+                                                                   z=int(xyz[2] * 100)), (int(self.reference_pixel[0]),
+                                                                                          int(self.reference_pixel[1])),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 1)
 
-                        # unpack the ordered bounding box, then compute the midpoint
-                        # between the top-left and top-right coordinates, followed by
-                        # the midpoint between bottom-left and bottom-right coordinates
+                        # write reference pixel image coordinates in display image
+                        # cv2.putText(orig, "({x}, {y})".format(x=int(self.reference_pixel[0]),
+                        # y=int(self.reference_pixel[1])), (int(self.reference_pixel[0]), int(self.reference_pixel[1])),
+                        #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 1)
+
+                        # unpack the ordered bounding box, then compute the midpoint between the top-left and top-right
+                        # coordinates, followed by the midpoint between bottom-left and bottom-right coordinates
                         (tl, tr, br, bl) = box
 
                         (tltrX, tltrY) = self.midpoint(tl, tr)
@@ -260,7 +310,9 @@ class RealSenseCamera:
                         cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
                         cv2.circle(orig, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
                         cv2.circle(orig, (int(objX), int(objY)), 5 * 2, (0, 255, 0), -1)
-                        xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, objX, objY, False, True)
+
+                        # get XYZ in world coordinate and plot in display image
+                        xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, objX, objY, None, False, True)
                         cv2.putText(orig, "({x}, {y}, {z})".format(x=int(xyz[0] * 100), y=int(xyz[1] * 100),
                                                                    z=int(xyz[2] * 100)), (int(objX), int(objY)),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 1)
@@ -271,6 +323,7 @@ class RealSenseCamera:
                                  (255, 0, 255), 2)
                         orientation = math.degrees(math.atan((tlblY - trbrY) / (trbrX - tlblX)))
 
+                        # show original image of the workspace and detected object together
                         try:
                             images = np.hstack(
                                 (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
@@ -292,6 +345,7 @@ class RealSenseCamera:
             # Stop streaming
             self.pipeline.stop()
 
+    # save the images to their respective object types
     def write_data(self, key_press, object_detected_img, edge_detected_img, BGRD_detected_img):
         try:
             file = os.listdir('images/' + self.list_of_objects[key_press])

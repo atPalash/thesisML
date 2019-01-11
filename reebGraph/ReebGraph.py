@@ -112,7 +112,6 @@ class ReebGraph:
             suitable_points[itr].append(orientation)
         cv2.imshow('masked image', self.mask_image)
         cv2.waitKey(0)
-        print 'gog'
 
     def closest_pt(self, pt, sel_pts):
         min = sys.maxint
@@ -126,5 +125,5 @@ class ReebGraph:
 
 
 if __name__ == "__main__":
-    rg = ReebGraph('images/objD/', 3, 80, 5, 20)
+    rg = ReebGraph('images/objA/', 3, 80, 5, 20)
     rg.get_image_contour()
