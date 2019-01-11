@@ -1,7 +1,4 @@
 import os
-
-import h5py
-
 import pyrealsense2 as rs
 import numpy as np
 import cv2
@@ -66,7 +63,7 @@ class RealSenseCamera:
         self.get_streaming_data()
 
     # getting BGRD or XYZ data for a pixel
-    def get_pixel_bgrd_or_xyz(self, image, pixel_coordinate_col, pixel_coordinate_row, bgrd, coordinate):
+    def get_pixel_bgrd_or_xyz(self, image, pixel_coordinate_col, pixel_coordinate_row, bgrd = False, coordinate = False):
         depth_intrin = self.aligned_depth_frame.profile.as_video_stream_profile().intrinsics
 
         # image padding is removed to receive correct distance
