@@ -260,6 +260,7 @@ class RealSenseCamera:
 
                         if self.list_of_objects is None:
                             try:
+                                contour_xyz = self.get_pixel_bgrd_or_xyz()
                                 object_dict = {'RGB': object_detected_img, 'EDGED': edge_detected_img,
                                                'BGRD': BGRD_detected_img, 'contour': c}
                                 self.detected_object_images.append(object_dict)

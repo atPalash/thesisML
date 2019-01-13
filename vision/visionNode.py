@@ -1,3 +1,5 @@
+import cv2
+
 from objectSelection import objectSelectorOOP
 from objectSelection import objectIdentifier
 
@@ -17,6 +19,8 @@ if __name__ == "__main__":
     images = camera.detected_object_images
     for img in images:
         image_rgb = img['RGB']
+        cv2.imshow('detected_obj', image_rgb)
+        cv2.waitKey(0)
         print objectIdentifier.predict(image_rgb)
 
 

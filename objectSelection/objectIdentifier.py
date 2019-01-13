@@ -1,14 +1,6 @@
-# USAGE
-# python test_network.py --model santa_not_santa.model --image images/examples/santa_01.png
-
-# import the necessary packages
-import os
-
 from keras.preprocessing.image import img_to_array
 from keras.models import load_model
 import numpy as np
-import imutils
-from imutils import paths
 import cv2
 
 
