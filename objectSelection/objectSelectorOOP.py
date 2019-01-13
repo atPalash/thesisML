@@ -14,7 +14,7 @@ class RealSenseCamera:
         self.realsense_img_rows = realsense_image_rows
         self.realsense_image_padding = realsense_image_padding
         self.list_of_objects = object_list
-        self.reference_pixel = (realsense_img_cols / 2, realsense_img_rows / 2)
+        self.reference_pixel = (self.realsense_img_cols / 2, self.realsense_img_rows / 2)
         self.reference_pixel_padding = 10
         self.reference_pixel_depth = 0
 
@@ -34,6 +34,9 @@ class RealSenseCamera:
         self.aligned_frames = None
         self.aligned_depth_frame = None
         self.color_frame = None
+
+        self.padded_image = None
+        self.detected_object_images = []
 
     def set_reference_pixel(self, ref_pixel, reference_pix_padding):
         self.reference_pixel = ref_pixel
@@ -158,7 +161,6 @@ class RealSenseCamera:
     def get_streaming_data(self):
         try:
             while True:
-
                 # Wait for a coherent pair of frames: depth and color
                 self.frames = self.pipeline.wait_for_frames()
                 self.aligned_frames = self.align.process(self.frames)
@@ -186,7 +188,7 @@ class RealSenseCamera:
                 image_bordered = cv2.copyMakeBorder(image, self.realsense_image_padding, self.realsense_image_padding,
                                                     self.realsense_image_padding, self.realsense_image_padding,
                                                     cv2.BORDER_REPLICATE)
-
+                self.padded_image = image_bordered.copy()
                 # load the image, convert it to grayscale, and blur it slightly
                 gray = cv2.cvtColor(image_bordered, cv2.COLOR_BGR2GRAY)
                 gray = cv2.GaussianBlur(gray, (7, 7), 0)
@@ -252,14 +254,35 @@ class RealSenseCamera:
                         edge_detected_img = edged.copy()
                         edge_detected_img = edge_detected_img[row_min:row_max, col_min:col_max]
 
-                        if self.list_of_objects is None:
-                            return [object_detected_img, edge_detected_img, c]
-                        else:
-                            # receive image depth for each pixel in the selected object area
-                            BGRD_detected_img = object_detected_img.copy()
-                            BGRD_detected_img = self.get_image_depth_all_pixel(BGRD_detected_img, col_min, row_min, False)
+                        # receive image depth for each pixel in the selected object area
+                        BGRD_detected_img = object_detected_img.copy()
+                        BGRD_detected_img = self.get_image_depth_all_pixel(BGRD_detected_img, col_min, row_min, False)
 
-                            # order the points in the contour such that they appear in top-left, top-right, bottom-right,
+                        if self.list_of_objects is None:
+                            try:
+                                object_dict = {'RGB': object_detected_img, 'EDGED': edge_detected_img,
+                                               'BGRD': BGRD_detected_img, 'contour': c}
+                                self.detected_object_images.append(object_dict)
+                                # show original image of the workspace and detected object together
+                                # try:
+                                #     images = np.hstack(
+                                #         (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
+                                #     # images = np.hstack((orig[:, :, 0], edged))
+                                # except Exception as e:
+                                #     print(e)
+                                #     continue
+                                #
+                                # # Show images
+                                # cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+                                # cv2.putText(images, "{:1f} sqpixel".format(cv2.contourArea(c)),
+                                #             (self.realsense_image_padding * 2, self.realsense_image_padding * 2),
+                                #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
+                                # cv2.imshow('RealSense', images)
+                                # cv2.waitKey(0)
+                            except:
+                                continue
+                        else:
+                            # order the points in the contour such that they appear in top-left, top-right, bottom-right
                             # and bottom-left order, then draw the outline of the rotated bounding box and draw contours
                             box = perspective.order_points(box)
                             cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
@@ -325,7 +348,6 @@ class RealSenseCamera:
                             cv2.line(orig, (int(tlblX), int(tlblY)), (int(trbrX), int(trbrY)),
                                      (255, 0, 255), 2)
                             orientation = math.degrees(math.atan((tlblY - trbrY) / (trbrX - tlblX)))
-
                             # show original image of the workspace and detected object together
                             try:
                                 images = np.hstack(
@@ -343,6 +365,8 @@ class RealSenseCamera:
                             cv2.imshow('RealSense', images)
                             key_press = cv2.waitKey(0)
                             self.write_data(key_press, object_detected_img, edge_detected_img, BGRD_detected_img)
+                if self.list_of_objects is None:
+                    break
         finally:
 
             # Stop streaming
@@ -375,7 +399,7 @@ if __name__ == "__main__":
     image_padding = 10
     reference_pix = (40, 40)
     padding_around_reference_pix = 10
-    camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding)
+    camera = RealSenseCamera(None, realsense_img_cols, realsense_img_rows, image_padding)
     camera.set_reference_pixel(reference_pix, padding_around_reference_pix)
     camera.start_streaming()
     camera.get_streaming_data()

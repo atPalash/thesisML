@@ -14,15 +14,14 @@ import cv2
 imagePaths = sorted(list(paths.list_images('testImages')))
 classes = 4
 # load the trained convolutional neural network
-print("[INFO] loading network..."
-      "")
-model = load_model('models/weights_best_RGB_DEPTH.hdf5')
+print("[INFO] loading network...")
+model = load_model('models/weights_best_RGB.hdf5')
 
 print model.summary()
 list_of_objects = {0: 'objA', 1: 'objB', 2: 'objC', 3: 'objD'}
 count = 0
 IM_SIZE = 200
-depth = 5
+depth = 3
 images = {}
 image_BGRD = np.zeros((200, 200, depth))
 # loop over the input images
@@ -38,20 +37,20 @@ for imagePath in imagePaths:
         # image_rgb = img_to_array(image_rgb)
         image_BGRD[:, :, 0:3] = image_rgb
         count = count + 1
-    if image[1] == 'DEPTH.png':
-        image_depth = cv2.imread(imagePath)
-        image_depth = cv2.cvtColor(image_depth, cv2.COLOR_BGR2GRAY)
-        image_depth = cv2.resize(image_depth, (IM_SIZE, IM_SIZE))
-        # image_depth = img_to_array(image_depth)
-        image_BGRD[:, :, 3] = image_depth
-        count = count + 1
-    if image[1] == 'EDGED.png':
-        image_edged = cv2.imread(imagePath)
-        image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
-        image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
-        # image_depth = img_to_array(image_depth)
-        image_BGRD[:, :, 4] = image_edged
-        count = count + 1
+    # if image[1] == 'DEPTH.png':
+    #     image_depth = cv2.imread(imagePath)
+    #     image_depth = cv2.cvtColor(image_depth, cv2.COLOR_BGR2GRAY)
+    #     image_depth = cv2.resize(image_depth, (IM_SIZE, IM_SIZE))
+    #     # image_depth = img_to_array(image_depth)
+    #     image_BGRD[:, :, 3] = image_depth
+    #     count = count + 1
+    # if image[1] == 'EDGED.png':
+    #     image_edged = cv2.imread(imagePath)
+    #     image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
+    #     image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
+    #     # image_depth = img_to_array(image_depth)
+    #     image_BGRD[:, :, 4] = image_edged
+    #     count = count + 1
     if count == 3:
         image_BGRD = cv2.resize(image_BGRD, (200, 200))
         image_BGRD = image_BGRD.astype("float") / 255.0
