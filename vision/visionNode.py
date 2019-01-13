@@ -1,24 +1,10 @@
 from objectSelection import objectSelectorOOP
-import os
-from keras.preprocessing.image import img_to_array
-from keras.models import load_model
-import numpy as np
-import imutils
-from imutils import paths
-import cv2
-
-imagePaths = sorted(list(paths.list_images('testImages')))
-classes = 4
+from objectSelection import objectIdentifier
 
 if __name__ == "__main__":
-    print("[INFO] loading network...")
-    # load the trained convolutional neural network
-    model = load_model('../objectSelection/models/weights_best_RGB.hdf5')
-    list_of_objects = {0: 'objA', 1: 'objB', 2: 'objC', 3: 'objD'}
-    count = 0
-    IM_SIZE = 200
-    depth = 3
-    image_BGRD = np.zeros((200, 200, depth))
+    object_list = {0: 'objA', 1: 'objB', 2: 'objC', 3: 'objD'}
+    selected_model = '/home/palash/thesis/thesisML/objectSelection/models/weights_best_RGB.hdf5'
+    objectIdentifier = objectIdentifier.ObjectIdentfier(selected_model, 4, 3, object_list)
 
     realsense_img_cols = 848
     realsense_img_rows = 480
@@ -31,3 +17,7 @@ if __name__ == "__main__":
     images = camera.detected_object_images
     for img in images:
         image_rgb = img['RGB']
+        print objectIdentifier.predict(image_rgb)
+
+
+

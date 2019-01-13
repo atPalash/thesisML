@@ -399,7 +399,7 @@ if __name__ == "__main__":
     image_padding = 10
     reference_pix = (40, 40)
     padding_around_reference_pix = 10
-    camera = RealSenseCamera(None, realsense_img_cols, realsense_img_rows, image_padding)
+    camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding)
     camera.set_reference_pixel(reference_pix, padding_around_reference_pix)
     camera.start_streaming()
     camera.get_streaming_data()
