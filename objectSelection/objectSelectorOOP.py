@@ -9,7 +9,9 @@ from imutils import contours
 
 
 class RealSenseCamera:
-    def __init__(self, object_list=None, realsense_image_cols=848, realsense_image_rows=480, realsense_image_padding=10):
+    def __init__(self, object_list=None, realsense_image_cols=848, realsense_image_rows=480, realsense_image_padding=10,
+                 realsense_camera=True):
+        self.realsense_present = realsense_camera
         self.realsense_img_cols = realsense_image_cols
         self.realsense_img_rows = realsense_image_rows
         self.realsense_image_padding = realsense_image_padding
@@ -17,26 +19,26 @@ class RealSenseCamera:
         self.reference_pixel = (self.realsense_img_cols / 2, self.realsense_img_rows / 2)
         self.reference_pixel_padding = 10
         self.reference_pixel_depth = 0
-
-        # Configure depth and color streams
-        self.pipeline = rs.pipeline()
-        self.config = rs.config()
-        self.config.enable_stream(rs.stream.depth, self.realsense_img_cols, self.realsense_img_rows, rs.format.z16, 30)
-        self.config.enable_stream(rs.stream.color, self.realsense_img_cols, self.realsense_img_rows, rs.format.bgr8, 30)
-
-        # Configure streaming instance parameters
-        self.profile = None
-        self.depth_sensor = None
-        self.depth_scale = None
-        self.align_to = None
-        self.align = None
-        self.frames = None
-        self.aligned_frames = None
-        self.aligned_depth_frame = None
-        self.color_frame = None
-
         self.padded_image = None
         self.detected_object_images = []
+
+        if self.realsense_present:
+            # Configure depth and color streams
+            self.pipeline = rs.pipeline()
+            self.config = rs.config()
+            self.config.enable_stream(rs.stream.depth, self.realsense_img_cols, self.realsense_img_rows, rs.format.z16, 30)
+            self.config.enable_stream(rs.stream.color, self.realsense_img_cols, self.realsense_img_rows, rs.format.bgr8, 30)
+
+            # Configure streaming instance parameters
+            self.profile = None
+            self.depth_sensor = None
+            self.depth_scale = None
+            self.align_to = None
+            self.align = None
+            self.frames = None
+            self.aligned_frames = None
+            self.aligned_depth_frame = None
+            self.color_frame = None
 
     def set_reference_pixel(self, ref_pixel, reference_pix_padding):
         self.reference_pixel = ref_pixel
@@ -63,7 +65,7 @@ class RealSenseCamera:
         for counter in range(20):
             self.pipeline.wait_for_frames()
 
-        self.get_streaming_data()
+        self.get_image_data()
 
     # getting BGRD or XYZ data for a pixel or list of pixel
     def get_pixel_bgrd_or_xyz(self, image, pixel_coordinate_col=None, pixel_coordinate_row=None, contours=None,
@@ -124,70 +126,67 @@ class RealSenseCamera:
 
     # getting BGRD data for a image
     def get_image_depth_all_pixel(self, image, pix_coordinate_col=None, pix_coordinate_row=None, ref=None):
+        if self.realsense_present:
+            depth_intrin = self.aligned_depth_frame.profile.as_video_stream_profile().intrinsics
+            image_depth = np.zeros([np.shape(image)[0], np.shape(image)[1]])
+            for pixel_coordinate_col in range(np.shape(image)[1]):
+                for pixel_coordinate_row in range(np.shape(image)[0]):
+                    # pixel_bgrd = []
+                    # image padding is removed to receive correct distance
+                    depth = self.aligned_depth_frame.get_distance(
+                        int(pixel_coordinate_col) + pix_coordinate_col - self.realsense_image_padding,
+                        int(pixel_coordinate_row) + pix_coordinate_row - self.realsense_image_padding)
+                    depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin,
+                                                                                          [int(
+                                                                                              pixel_coordinate_col) + pix_coordinate_col,
+                                                                                           int(
+                                                                                               pixel_coordinate_row) + pix_coordinate_row],
+                                                                                          depth)
+                    if ref:
+                        image_depth[pixel_coordinate_row, pixel_coordinate_col] = depth_point_in_meters_camera_coords[2]  # D
+                    else:
+                        image_depth[pixel_coordinate_row, pixel_coordinate_col] = self.reference_pixel_depth - depth_point_in_meters_camera_coords[2]  # D
 
-        depth_intrin = self.aligned_depth_frame.profile.as_video_stream_profile().intrinsics
-        image_depth = np.zeros([np.shape(image)[0], np.shape(image)[1]])
-        for pixel_coordinate_col in range(np.shape(image)[1]):
-            for pixel_coordinate_row in range(np.shape(image)[0]):
-                # pixel_bgrd = []
-                # image padding is removed to receive correct distance
-                depth = self.aligned_depth_frame.get_distance(
-                    int(pixel_coordinate_col) + pix_coordinate_col - self.realsense_image_padding,
-                    int(pixel_coordinate_row) + pix_coordinate_row - self.realsense_image_padding)
-                depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin,
-                                                                                      [int(
-                                                                                          pixel_coordinate_col) + pix_coordinate_col,
-                                                                                       int(
-                                                                                           pixel_coordinate_row) + pix_coordinate_row],
-                                                                                      depth)
-                if ref:
-                    image_depth[pixel_coordinate_row, pixel_coordinate_col] = depth_point_in_meters_camera_coords[2]  # D
-                else:
-                    image_depth[pixel_coordinate_row, pixel_coordinate_col] = self.reference_pixel_depth - depth_point_in_meters_camera_coords[2]  # D
-
-        if not ref:
-            norm = np.amax(image_depth)
-            image_depth[:, :] = image_depth[:, :] * (1000 / norm)
-            depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(image_depth, alpha=0.5), cv2.COLORMAP_JET)
-            # cv2.imshow('depth_image', depth_colormap)
-            # cv2.waitKey(0)
-        return image_depth
+            if not ref:
+                norm = np.amax(image_depth)
+                image_depth[:, :] = image_depth[:, :] * (1000 / norm)
+                depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(image_depth, alpha=0.5), cv2.COLORMAP_JET)
+                # cv2.imshow('depth_image', depth_colormap)
+                # cv2.waitKey(0)
+            return image_depth
+        else:
+            return []
 
 
     @staticmethod
     def midpoint(ptA, ptB):
         return (ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5
 
-    def get_streaming_data(self):
+    def get_image_data(self, input_image=None):
+        self.detected_object_images = []
         try:
             while True:
-                # Wait for a coherent pair of frames: depth and color
-                self.frames = self.pipeline.wait_for_frames()
-                self.aligned_frames = self.align.process(self.frames)
-                self.aligned_depth_frame = self.aligned_frames.get_depth_frame()
-                self.color_frame = self.frames.get_color_frame()
+                if self.realsense_present:
+                    # Wait for a coherent pair of frames: depth and color
+                    self.frames = self.pipeline.wait_for_frames()
+                    self.aligned_frames = self.align.process(self.frames)
+                    self.aligned_depth_frame = self.aligned_frames.get_depth_frame()
+                    self.color_frame = self.frames.get_color_frame()
 
-                if not self.aligned_depth_frame or not self.color_frame:
-                    continue
-
-                # Convert images to numpy arrays
-                depth_image = np.asanyarray(self.aligned_depth_frame.get_data())
-                color_image = np.asanyarray(self.color_frame.get_data())
-                # depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
-                # cv2.imshow('depth_image', depth_colormap)
-                # cv2.waitKey(0)
-                # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
-
-                # [rows, columns, channel] = np.shape(color_image)
-                # num_rows = depth_image.shape[0]
-                # num_cols = depth_image.shape[1]
-
-                image = color_image
+                    if not self.aligned_depth_frame or not self.color_frame:
+                        continue
+                    # Convert images to numpy arrays
+                    depth_image = np.asanyarray(self.aligned_depth_frame.get_data())
+                    color_image = np.asanyarray(self.color_frame.get_data())
+                    image = color_image
+                else:
+                    image = cv2.imread(input_image)
 
                 # creating border around the received image for neglecting objects at image extremes
                 image_bordered = cv2.copyMakeBorder(image, self.realsense_image_padding, self.realsense_image_padding,
                                                     self.realsense_image_padding, self.realsense_image_padding,
                                                     cv2.BORDER_REPLICATE)
+
                 self.padded_image = image_bordered.copy()
                 # load the image, convert it to grayscale, and blur it slightly
                 gray = cv2.cvtColor(image_bordered, cv2.COLOR_BGR2GRAY)
@@ -197,6 +196,19 @@ class RealSenseCamera:
                 edged = cv2.Canny(gray, 40, 40)
                 edged = cv2.dilate(edged, None, iterations=5)
                 edged = cv2.erode(edged, None, iterations=5)
+
+                # image copy to display results
+                orig = image_bordered.copy()
+
+                # draw lines on display image to indicate workspace boundary
+                cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
+                         (self.realsense_image_padding, self.realsense_img_rows), (0, 0, 255), 20)
+                cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
+                         (self.realsense_img_cols, self.realsense_image_padding), (0, 0, 255), 20)
+                cv2.line(orig, (self.realsense_img_cols, self.realsense_image_padding),
+                         (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
+                cv2.line(orig, (self.realsense_image_padding, self.realsense_img_rows),
+                         (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
 
                 # find contours in the edge map
                 cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL,
@@ -211,18 +223,7 @@ class RealSenseCamera:
                     if cv2.contourArea(c) < 1000:
                         continue
 
-                    # image copy to display results
-                    orig = image_bordered.copy()
 
-                    # draw lines on display image to indicate workspace boundary
-                    cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
-                             (self.realsense_image_padding, self.realsense_img_rows), (0, 0, 255), 20)
-                    cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
-                             (self.realsense_img_cols, self.realsense_image_padding), (0, 0, 255), 20)
-                    cv2.line(orig, (self.realsense_img_cols, self.realsense_image_padding),
-                             (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
-                    cv2.line(orig, (self.realsense_image_padding, self.realsense_img_rows),
-                             (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
 
                     # get the min area bounding box around the object/contour
                     box = cv2.minAreaRect(c)
@@ -241,9 +242,6 @@ class RealSenseCamera:
                         print "object out of camera view"
                         continue
                     else:
-                        # Get reference pixel depth
-                        self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig, True)
-
                         # make a copy of RGB image(with border) and crop out the object area as defined by bounding box
                         # extremes
                         object_detected_img = image_bordered.copy()
@@ -260,26 +258,30 @@ class RealSenseCamera:
 
                         if self.list_of_objects is None:
                             try:
-                                contour_xyz = self.get_pixel_bgrd_or_xyz()
-                                object_dict = {'RGB': object_detected_img, 'EDGED': edge_detected_img,
-                                               'BGRD': BGRD_detected_img, 'contour': c}
+                                if self.realsense_present:
+                                    # Get reference pixel depth
+                                    self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig, True)
+                                    contour_xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, None, None, c, False, True)
+                                    object_dict = {'RGB': object_detected_img, 'EDGED': edge_detected_img,
+                                                   'BGRD': BGRD_detected_img, 'contour': contour_xyz}
+                                else:
+                                    object_dict = {'RGB': object_detected_img, 'EDGED': edge_detected_img,
+                                                   'BGRD': BGRD_detected_img, 'contour': c}
                                 self.detected_object_images.append(object_dict)
                                 # show original image of the workspace and detected object together
-                                # try:
-                                #     images = np.hstack(
-                                #         (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
-                                #     # images = np.hstack((orig[:, :, 0], edged))
-                                # except Exception as e:
-                                #     print(e)
-                                #     continue
-                                #
-                                # # Show images
+                                try:
+                                    images = np.hstack(
+                                        (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
+                                    # images = np.hstack((orig[:, :, 0], edged))
+                                except Exception as e:
+                                    print(e)
+                                    continue
+
+                                # Show images
                                 # cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-                                # cv2.putText(images, "{:1f} sqpixel".format(cv2.contourArea(c)),
-                                #             (self.realsense_image_padding * 2, self.realsense_image_padding * 2),
-                                #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
                                 # cv2.imshow('RealSense', images)
                                 # cv2.waitKey(0)
+                                # cv2.destroyAllWindows()
                             except:
                                 continue
                         else:
@@ -369,9 +371,9 @@ class RealSenseCamera:
                 if self.list_of_objects is None:
                     break
         finally:
-
             # Stop streaming
-            self.pipeline.stop()
+            if self.realsense_present:
+                self.pipeline.stop()
 
     # save the images to their respective object types
     def write_data(self, key_press, object_detected_img, edge_detected_img, BGRD_detected_img):
@@ -400,7 +402,14 @@ if __name__ == "__main__":
     image_padding = 10
     reference_pix = (40, 40)
     padding_around_reference_pix = 10
-    camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding)
-    camera.set_reference_pixel(reference_pix, padding_around_reference_pix)
-    camera.start_streaming()
-    camera.get_streaming_data()
+    realsense_present = False
+    if realsense_present:
+        camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding, realsense_present)
+        camera.set_reference_pixel(reference_pix, padding_around_reference_pix)
+        camera.start_streaming()
+    else:
+        test_image_path = '/home/palash/thesis/thesisML/objectSelection/images/4_Color.png'
+        camera = RealSenseCamera(None, 1280, 720, image_padding, realsense_present)
+        camera.set_reference_pixel(reference_pix, padding_around_reference_pix)
+        camera.get_image_data(test_image_path)
+

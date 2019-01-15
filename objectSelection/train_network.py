@@ -1,7 +1,3 @@
-# USAGE
-# python train_network.py --dataset images --model santa_not_santa.model
-
-# set the matplotlib backend so figures can be saved in the background
 import matplotlib
 
 matplotlib.use("Agg")
@@ -37,7 +33,7 @@ labels = []
 data = []
 classes = 4
 # grab the image paths and randomly shuffle them
-imagePaths = sorted(list(paths.list_images('images')))
+imagePaths = sorted(list(paths.list_images('images/training')))
 # random.seed(42)
 # random.shuffle(imagePaths)
 count = 0
@@ -47,8 +43,8 @@ image_BGRD = np.zeros((200, 200, depth))
 # loop over the input images
 for imagePath in imagePaths:
     # load the image, pre-process it, and store it in the data list
-    label = imagePath.split(os.path.sep)[1]
-    image = imagePath.split(os.path.sep)[2].split('_')
+    label = imagePath.split(os.path.sep)[2]
+    image = imagePath.split(os.path.sep)[3].split('_')
 
     if image[1] == 'RGB.png':
         image_rgb = cv2.imread(imagePath)
@@ -56,21 +52,21 @@ for imagePath in imagePaths:
         # image_rgb = img_to_array(image_rgb)
         image_BGRD[:, :, 0:3] = image_rgb
         count = count + 1
-    if image[1] == 'DEPTH.png':
-        image_depth = cv2.imread(imagePath)
-        image_depth = cv2.cvtColor(image_depth, cv2.COLOR_BGR2GRAY)
-        image_depth = cv2.resize(image_depth, (IM_SIZE, IM_SIZE))
-        # image_depth = img_to_array(image_depth)
-        image_BGRD[:, :, 3] = image_depth
-        count = count + 1
-    if image[1] == 'EDGED.png':
-        image_edged = cv2.imread(imagePath)
-        image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
-        image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
-        # image_depth = img_to_array(image_depth)
-        image_BGRD[:, :, 4] = image_edged
-        count = count + 1
-    if count == 3:
+    # if image[1] == 'DEPTH.png':
+    #     image_depth = cv2.imread(imagePath)
+    #     image_depth = cv2.cvtColor(image_depth, cv2.COLOR_BGR2GRAY)
+    #     image_depth = cv2.resize(image_depth, (IM_SIZE, IM_SIZE))
+    #     # image_depth = img_to_array(image_depth)
+    #     image_BGRD[:, :, 3] = image_depth
+    #     count = count + 1
+    # if image[1] == 'EDGED.png':
+    #     image_edged = cv2.imread(imagePath)
+    #     image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
+    #     image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
+    #     # image_depth = img_to_array(image_depth)
+    #     image_BGRD[:, :, 4] = image_edged
+    #     count = count + 1
+    if count == 1:
         data.append(image_BGRD)
         image_BGRD = np.zeros((200, 200, depth))
         # extract the class label from the image path and update the
@@ -119,7 +115,6 @@ H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
 
 # save the model to disk
 print("[INFO] serializing network...")
-model.save('objectDetector.model')
 
 # plot the training loss and accuracy
 plt.style.use("ggplot")

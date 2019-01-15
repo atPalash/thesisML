@@ -11,7 +11,7 @@ import imutils
 from imutils import paths
 import cv2
 
-imagePaths = sorted(list(paths.list_images('testImages')))
+imagePaths = sorted(list(paths.list_images('testImages/objD')))
 classes = 4
 # load the trained convolutional neural network
 print("[INFO] loading network...")
@@ -29,7 +29,7 @@ for imagePath in imagePaths:
     # load the image, pre-process it, and store it in the data list
     label = imagePath.split(os.path.sep)[1]
     image = imagePath.split(os.path.sep)[2].split('_')
-
+    print imagePath
     if image[1] == 'RGB.png':
         image_rgb = cv2.imread(imagePath)
         orig = image_rgb.copy()
@@ -51,7 +51,8 @@ for imagePath in imagePaths:
     #     # image_depth = img_to_array(image_depth)
     #     image_BGRD[:, :, 4] = image_edged
     #     count = count + 1
-    if count == 3:
+
+    if count == 1:
         image_BGRD = cv2.resize(image_BGRD, (200, 200))
         image_BGRD = image_BGRD.astype("float") / 255.0
         image_BGRD = img_to_array(image_BGRD)
