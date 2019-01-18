@@ -252,7 +252,7 @@ class RealSenseCamera:
 
                         # receive image depth for each pixel in the selected object area
                         BGRD_detected_img = object_detected_img.copy()
-                        # BGRD_detected_img = self.get_image_depth_all_pixel(BGRD_detected_img, col_min, row_min, False)
+                        BGRD_detected_img = self.get_image_depth_all_pixel(BGRD_detected_img, col_min, row_min, False)
 
                         if self.list_of_objects is None:
                             try:
@@ -379,13 +379,13 @@ class RealSenseCamera:
     # save the images to their respective object types
     def write_data(self, key_press, object_detected_img, edge_detected_img, BGRD_detected_img):
         try:
-            file = os.listdir('images/' + self.list_of_objects[key_press])
+            file = os.listdir('images/sample_images/' + self.list_of_objects[key_press])
             filenum = len(file) / 3 + 1
-            cv2.imwrite('images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
+            cv2.imwrite('images/sample_images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
                         str(filenum) + '_RGB.png', object_detected_img)
-            cv2.imwrite('images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
+            cv2.imwrite('images/sample_images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
                         str(filenum) + '_EDGED.png', edge_detected_img)
-            cv2.imwrite('images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
+            cv2.imwrite('images/sample_images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
                         str(filenum) + '_DEPTH.png', BGRD_detected_img)
 
         except:
@@ -405,7 +405,8 @@ if __name__ == "__main__":
     padding_around_reference_pix = 10
     realsense_present = True
     if realsense_present:
-        camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding, realsense_present)
+        camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding,
+                                 realsense_present)
         camera.set_reference_pixel(reference_pix, padding_around_reference_pix)
         camera.start_streaming()
     else:

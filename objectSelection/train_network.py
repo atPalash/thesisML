@@ -37,7 +37,7 @@ imagePaths = sorted(list(paths.list_images('images/training')))
 # random.seed(42)
 # random.shuffle(imagePaths)
 count = 0
-depth = 5
+depth = 1
 images = {}
 image_BGRD = np.zeros((200, 200, depth))
 # loop over the input images
@@ -46,26 +46,24 @@ for imagePath in imagePaths:
     label = imagePath.split(os.path.sep)[2]
     image = imagePath.split(os.path.sep)[3].split('_')
 
-    if image[1] == 'RGB.png':
-        image_rgb = cv2.imread(imagePath)
-        image_rgb = cv2.resize(image_rgb, (IM_SIZE, IM_SIZE))
-        # image_rgb = img_to_array(image_rgb)
-        image_BGRD[:, :, 0:3] = image_rgb
-        count = count + 1
+    # if image[1] == 'RGB.png':
+    #     image_rgb = cv2.imread(imagePath)
+    #     image_rgb = cv2.resize(image_rgb, (IM_SIZE, IM_SIZE))
+        # image_BGRD[:, :, 0:3] = image_rgb
+        # count = count + 1
     # if image[1] == 'DEPTH.png':
     #     image_depth = cv2.imread(imagePath)
     #     image_depth = cv2.cvtColor(image_depth, cv2.COLOR_BGR2GRAY)
     #     image_depth = cv2.resize(image_depth, (IM_SIZE, IM_SIZE))
-    #     # image_depth = img_to_array(image_depth)
-    #     image_BGRD[:, :, 3] = image_depth
-    #     count = count + 1
-    # if image[1] == 'EDGED.png':
-    #     image_edged = cv2.imread(imagePath)
-    #     image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
-    #     image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
-    #     # image_depth = img_to_array(image_depth)
-    #     image_BGRD[:, :, 4] = image_edged
-    #     count = count + 1
+    #     image_depth = img_to_array(image_depth)
+        # image_BGRD[:, :, 3] = image_depth
+        # count = count + 1
+    if image[1] == 'EDGED.png':
+        image_edged = cv2.imread(imagePath)
+        image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
+        image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
+        image_BGRD[:, :, 0] = image_edged
+        count = count + 1
     if count == 1:
         data.append(image_BGRD)
         image_BGRD = np.zeros((200, 200, depth))
@@ -103,7 +101,7 @@ model.compile(loss="categorical_crossentropy", optimizer=opt,
               metrics=["accuracy"])
 
 # checkpoint best model
-filepath = "models/weights_best_RGB_DEPTH.hdf5"
+filepath = "models/weights_best_EDGED.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint]
 
