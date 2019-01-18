@@ -11,7 +11,7 @@ import imutils
 from imutils import paths
 import cv2
 
-imagePaths = sorted(list(paths.list_images('testImages/objD')))
+imagePaths = sorted(list(paths.list_images('objectSelection/images/training')))
 classes = 4
 # load the trained convolutional neural network
 print("[INFO] loading network...")

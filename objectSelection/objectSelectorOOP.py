@@ -147,9 +147,9 @@ class RealSenseCamera:
                     else:
                         image_depth[pixel_coordinate_row, pixel_coordinate_col] = self.reference_pixel_depth - depth_point_in_meters_camera_coords[2]  # D
 
-            if not ref:
-                norm = np.amax(image_depth)
-                image_depth[:, :] = image_depth[:, :] * (1000 / norm)
+            # if not ref:
+            #     norm = np.amax(image_depth)
+            #     image_depth[:, :] = image_depth[:, :] * (1000 / norm)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(image_depth, alpha=0.5), cv2.COLORMAP_JET)
                 # cv2.imshow('depth_image', depth_colormap)
                 # cv2.waitKey(0)
@@ -197,19 +197,6 @@ class RealSenseCamera:
                 edged = cv2.dilate(edged, None, iterations=5)
                 edged = cv2.erode(edged, None, iterations=5)
 
-                # image copy to display results
-                orig = image_bordered.copy()
-
-                # draw lines on display image to indicate workspace boundary
-                cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
-                         (self.realsense_image_padding, self.realsense_img_rows), (0, 0, 255), 20)
-                cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
-                         (self.realsense_img_cols, self.realsense_image_padding), (0, 0, 255), 20)
-                cv2.line(orig, (self.realsense_img_cols, self.realsense_image_padding),
-                         (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
-                cv2.line(orig, (self.realsense_image_padding, self.realsense_img_rows),
-                         (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
-
                 # find contours in the edge map
                 cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL,
                                         cv2.CHAIN_APPROX_SIMPLE)
@@ -220,10 +207,21 @@ class RealSenseCamera:
 
                 for c in cnts:
                     # if the contour is not sufficiently large, ignore it
-                    if cv2.contourArea(c) < 1000:
+                    if cv2.contourArea(c) < 5000:
                         continue
 
+                    # image copy to display results
+                    orig = image_bordered.copy()
 
+                    # draw lines on display image to indicate workspace boundary
+                    cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
+                             (self.realsense_image_padding, self.realsense_img_rows), (0, 0, 255), 20)
+                    cv2.line(orig, (self.realsense_image_padding, self.realsense_image_padding),
+                             (self.realsense_img_cols, self.realsense_image_padding), (0, 0, 255), 20)
+                    cv2.line(orig, (self.realsense_img_cols, self.realsense_image_padding),
+                             (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
+                    cv2.line(orig, (self.realsense_image_padding, self.realsense_img_rows),
+                             (self.realsense_img_cols, self.realsense_img_rows), (0, 0, 255), 20)
 
                     # get the min area bounding box around the object/contour
                     box = cv2.minAreaRect(c)
@@ -254,28 +252,28 @@ class RealSenseCamera:
 
                         # receive image depth for each pixel in the selected object area
                         BGRD_detected_img = object_detected_img.copy()
-                        BGRD_detected_img = self.get_image_depth_all_pixel(BGRD_detected_img, col_min, row_min, False)
+                        # BGRD_detected_img = self.get_image_depth_all_pixel(BGRD_detected_img, col_min, row_min, False)
 
                         if self.list_of_objects is None:
                             try:
                                 if self.realsense_present:
                                     # Get reference pixel depth
-                                    self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig, True)
-                                    contour_xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, None, None, c, False, True)
+                                    # self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig, True)
+                                    # contour_xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, None, None, c, False, True)
                                     object_dict = {'RGB': object_detected_img, 'EDGED': edge_detected_img,
-                                                   'BGRD': BGRD_detected_img, 'contour': contour_xyz}
+                                                   'BGRD': BGRD_detected_img, 'contour': c}
                                 else:
                                     object_dict = {'RGB': object_detected_img, 'EDGED': edge_detected_img,
                                                    'BGRD': BGRD_detected_img, 'contour': c}
                                 self.detected_object_images.append(object_dict)
                                 # show original image of the workspace and detected object together
-                                try:
-                                    images = np.hstack(
-                                        (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
-                                    # images = np.hstack((orig[:, :, 0], edged))
-                                except Exception as e:
-                                    print(e)
-                                    continue
+                                # try:
+                                #     images = np.hstack(
+                                #         (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
+                                #     # images = np.hstack((orig[:, :, 0], edged))
+                                # except Exception as e:
+                                #     print(e)
+                                #     continue
 
                                 # Show images
                                 # cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
@@ -367,6 +365,9 @@ class RealSenseCamera:
                                         cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
                             cv2.imshow('RealSense', images)
                             key_press = cv2.waitKey(0)
+                            cv2.imshow('edged', edge_detected_img)
+                            cv2.waitKey(0)
+                            cv2.destroyAllWindows()
                             self.write_data(key_press, object_detected_img, edge_detected_img, BGRD_detected_img)
                 if self.list_of_objects is None:
                     break
@@ -402,7 +403,7 @@ if __name__ == "__main__":
     image_padding = 10
     reference_pix = (40, 40)
     padding_around_reference_pix = 10
-    realsense_present = False
+    realsense_present = True
     if realsense_present:
         camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding, realsense_present)
         camera.set_reference_pixel(reference_pix, padding_around_reference_pix)

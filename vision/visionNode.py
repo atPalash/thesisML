@@ -13,16 +13,18 @@ if __name__ == "__main__":
     image_padding = 10
     reference_pix = (40, 40)
     padding_around_reference_pix = 10
-    camera = objectSelectorOOP.RealSenseCamera(None, realsense_img_cols, realsense_img_rows, image_padding, False)
+    camera = objectSelectorOOP.RealSenseCamera(None, realsense_img_cols, realsense_img_rows, image_padding, True)
     camera.set_reference_pixel(reference_pix, padding_around_reference_pix)
-    imagePaths = sorted(list(paths.list_images('../objectSelection/images')))
-    for imagePath in imagePaths:
-        camera.get_image_data(imagePath)
+    # imagePaths = sorted(list(paths.list_images('../objectSelection/images')))
+    # for imagePath in imagePaths:
+    while True:
+        camera.start_streaming()
         images = camera.detected_object_images
+
         for img in images:
             image_rgb = img['RGB']
             cv2.putText(image_rgb, objectIdentifier.predict(image_rgb),
-                                            (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
+                        (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
 
             cv2.imshow('detected_obj', image_rgb)
             cv2.waitKey(0)
