@@ -99,16 +99,16 @@ class RealSenseCamera:
             pt_bgrd = []
             # image padding is removed to receive correct distance
             for pt in contours:
-                depth = self.aligned_depth_frame.get_distance(int(pt[0]) - self.realsense_image_padding,
-                                                              int(pt[1]) - self.realsense_image_padding)
+                depth = self.aligned_depth_frame.get_distance(int(pt[0][0]) - self.realsense_image_padding,
+                                                              int(pt[0][1]) - self.realsense_image_padding)
                 # data with XYZ values is returned wrt camera coordinates
                 depth_point_in_meters_camera_coords = rs.rs2_deproject_pixel_to_point(depth_intrin,
-                                                                                      [int(pt[0]),
-                                                                                       int(pt[1])], depth)
+                                                                                      [int(pt[0][0]),
+                                                                                       int(pt[0][1])], depth)
                 if bgrd:
-                    bgrd = [image[pt[0]][pt[1]][0],  # B
-                            image[pt[0]][pt[1]][1],  # G
-                            image[pt[0]][pt[1]][2],  # R
+                    bgrd = [image[pt[0][1]][pt[0][0]][0],  # B
+                            image[pt[0][1]][pt[0][0]][1],  # G
+                            image[pt[0][1]][pt[0][0]][2],  # R
                             depth_point_in_meters_camera_coords[2]]  # D
                     pt_bgrd.append([pt, bgrd])
                 if coordinate:
@@ -258,10 +258,10 @@ class RealSenseCamera:
                             try:
                                 if self.realsense_present:
                                     # Get reference pixel depth
-                                    # self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig, True)
-                                    # contour_xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, None, None, c, False, True)
+                                    self.reference_pixel_depth = self.get_reference_pixel_depth_from_camera(orig, True)
+                                    contour_xyz = self.get_pixel_bgrd_or_xyz(object_detected_img, None, None, c, False, True)
                                     object_dict = {'RGB': object_detected_img, 'EDGED': edge_detected_img,
-                                                   'BGRD': BGRD_detected_img, 'contour': c}
+                                                   'BGRD': BGRD_detected_img, 'contour': contour_xyz}
                                 else:
                                     object_dict = {'RGB': object_detected_img, 'EDGED': edge_detected_img,
                                                    'BGRD': BGRD_detected_img, 'contour': c}
