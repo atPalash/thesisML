@@ -377,15 +377,19 @@ class RealSenseCamera:
                 self.pipeline.stop()
 
     # save the images to their respective object types
-    def write_data(self, key_press, object_detected_img, edge_detected_img, BGRD_detected_img):
+    def write_data(self, key_press, object_detected_img, edge_detected_img, BGRD_detected_img, image_pth=None):
+        if image_pth is None:
+            image_path = 'images/sample_images/'
+        else:
+            image_path = image_pth
         try:
-            file = os.listdir('images/sample_images/' + self.list_of_objects[key_press])
+            file = os.listdir(image_path + self.list_of_objects[key_press])
             filenum = len(file) / 3 + 1
-            cv2.imwrite('images/sample_images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
+            cv2.imwrite(image_path + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
                         str(filenum) + '_RGB.png', object_detected_img)
-            cv2.imwrite('images/sample_images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
+            cv2.imwrite(image_path + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
                         str(filenum) + '_EDGED.png', edge_detected_img)
-            cv2.imwrite('images/sample_images/' + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
+            cv2.imwrite(image_path + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
                         str(filenum) + '_DEPTH.png', BGRD_detected_img)
 
         except:
