@@ -6,11 +6,12 @@ import math
 import imutils
 from imutils import perspective
 from imutils import contours
+import keyboard
 
 
 class RealSenseCamera:
     def __init__(self, object_list=None, realsense_image_cols=848, realsense_image_rows=480, realsense_image_padding=10,
-                 realsense_camera=True):
+                 realsense_camera=True, flt_sz=3, cnny_thrsh=80, cnny_itr=5):
         self.realsense_present = realsense_camera
         self.realsense_img_cols = realsense_image_cols
         self.realsense_img_rows = realsense_image_rows
@@ -21,6 +22,10 @@ class RealSenseCamera:
         self.reference_pixel_depth = 0
         self.padded_image = None
         self.detected_object_images = []
+
+        self.filter_size = flt_sz
+        self.canny_threshold = cnny_thrsh
+        self.canny_iteration_num = cnny_itr
 
         if self.realsense_present:
             # Configure depth and color streams
@@ -39,6 +44,7 @@ class RealSenseCamera:
             self.aligned_frames = None
             self.aligned_depth_frame = None
             self.color_frame = None
+            self.snap_taken = False
 
     def set_reference_pixel(self, ref_pixel, reference_pix_padding):
         self.reference_pixel = ref_pixel
@@ -65,7 +71,7 @@ class RealSenseCamera:
         for counter in range(20):
             self.pipeline.wait_for_frames()
 
-        self.get_image_data()
+        # self.get_image_data()
 
     # getting BGRD or XYZ data for a pixel or list of pixel
     def get_pixel_bgrd_or_xyz(self, image, pixel_coordinate_col=None, pixel_coordinate_row=None, contours=None,
@@ -190,12 +196,12 @@ class RealSenseCamera:
                 self.padded_image = image_bordered.copy()
                 # load the image, convert it to grayscale, and blur it slightly
                 gray = cv2.cvtColor(image_bordered, cv2.COLOR_BGR2GRAY)
-                gray = cv2.GaussianBlur(gray, (7, 7), 0)
+                gray = cv2.GaussianBlur(gray, (self.filter_size, self.filter_size), 0)
 
                 # perform edge detection, then perform a dilation + erosion to close gaps in between object edges
-                edged = cv2.Canny(gray, 40, 40)
-                edged = cv2.dilate(edged, None, iterations=5)
-                edged = cv2.erode(edged, None, iterations=5)
+                edged = cv2.Canny(gray, self.canny_threshold, self.canny_threshold)
+                edged = cv2.dilate(edged, None, iterations=self.canny_iteration_num)
+                edged = cv2.erode(edged, None, iterations=self.canny_iteration_num)
 
                 # find contours in the edge map
                 cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL,
@@ -207,7 +213,7 @@ class RealSenseCamera:
 
                 for c in cnts:
                     # if the contour is not sufficiently large, ignore it
-                    if cv2.contourArea(c) < 5000:
+                    if cv2.contourArea(c) < 1000:
                         continue
 
                     # image copy to display results
@@ -237,7 +243,7 @@ class RealSenseCamera:
                     # neglect if object is outside the workspace boundary
                     if col_min < self.realsense_image_padding or col_max > self.realsense_img_cols \
                             or row_min < self.realsense_image_padding or row_max > self.realsense_img_rows:
-                        print "object out of camera view"
+                        # print "object out of camera view"
                         continue
                     else:
                         # make a copy of RGB image(with border) and crop out the object area as defined by bounding box
@@ -374,30 +380,41 @@ class RealSenseCamera:
         finally:
             # Stop streaming
             if self.realsense_present:
-                self.pipeline.stop()
+                print 'stopping camera'
 
     # save the images to their respective object types
-    def write_data(self, key_press, object_detected_img, edge_detected_img, BGRD_detected_img, image_pth=None):
+    def write_data(self, key_press=None, object_detected_img=None, edge_detected_img=None, BGRD_detected_img=None, image_pth=None):
         if image_pth is None:
-            image_path = 'images/sample_images/'
+            image_path = 'images/sample_images/' + self.list_of_objects[key_press]
         else:
             image_path = image_pth
         try:
-            file = os.listdir(image_path + self.list_of_objects[key_press])
+            file = os.listdir(image_path)
             filenum = len(file) / 3 + 1
-            cv2.imwrite(image_path + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
-                        str(filenum) + '_RGB.png', object_detected_img)
-            cv2.imwrite(image_path + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
-                        str(filenum) + '_EDGED.png', edge_detected_img)
-            cv2.imwrite(image_path + self.list_of_objects[key_press] + '/' + self.list_of_objects[key_press] +
-                        str(filenum) + '_DEPTH.png', BGRD_detected_img)
-
+            cv2.imwrite(image_path + image_path.split('/')[-1] + str(filenum) + '_RGB.png', object_detected_img)
+            cv2.imwrite(image_path + image_path.split('/')[-1] + str(filenum) + '_EDGED.png', edge_detected_img)
+            cv2.imwrite(image_path + image_path.split('/')[-1] + str(filenum) + '_DEPTH.png', BGRD_detected_img)
         except:
-            press_str = ""
-            for key in self.list_of_objects:
-                press_str = press_str + list_of_objects[key] + ', '
+            if self.list_of_objects is not None:
+                press_str = ""
+                for key in self.list_of_objects:
+                    press_str = press_str + list_of_objects[key] + ', '
 
-            print 'This object is not in list, press ' + press_str
+                print 'This object is not in list, press ' + press_str
+
+    def take_snap(self, data, object_type):
+        self.get_image_data()
+        images = self.detected_object_images
+
+        if len(images) is 1:
+            for img in images:
+                image_rgb = img['RGB']
+                image_depth = img['BGRD']
+                image_edged = img['EDGED']
+                self.write_data(None, image_rgb, image_edged, image_depth,
+                                  image_pth='/home/palash/thesis/thesisML/objectSelection/images/sample_images/training_generator/'
+                                            + object_type + '/')
+        self.snap_taken = True
 
 
 if __name__ == "__main__":

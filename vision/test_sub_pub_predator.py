@@ -17,7 +17,7 @@ def callback(data):
 def talker():
     pub = rospy.Publisher('predator', String, queue_size=1)
     rospy.init_node('predator', anonymous=True)
-    rospy.Subscriber('thinkpad', String, callback)
+    rospy.Subscriber('ready_for_snap', String, callback)
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
         hello_str = "hello world from predator %s" % rospy.get_time()
