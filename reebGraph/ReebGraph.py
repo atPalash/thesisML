@@ -25,6 +25,7 @@ class ReebGraph:
         self.contour = None
         self.contour_xyz = None
         self.image_np = None
+        self.gripping_points = []
 
     def get_image_contour(self, rgb_image=None, contour_xyz=None):
         self.row_const_col = []
@@ -48,8 +49,6 @@ class ReebGraph:
                         self.mask_image[row][col] = 0
                     else:
                         self.mask_image[row][col] = 1
-            cv2.imshow('masked_img', self.mask_image)
-            cv2.waitKey(0)
             self.plot_mid_points()
 
     def get_saved_image_contour(self):
@@ -114,7 +113,7 @@ class ReebGraph:
                     pt_info.append(thickness)
                     suitable_points.append(pt_info)
         selected_pts = []
-        # sel_pts = []
+
         for pt in suitable_points:
             selected_pts.append(pt[0])
             # sel_pts.append(pt[0])
@@ -126,14 +125,15 @@ class ReebGraph:
             orientation = math.degrees(math.atan2(suitable_points[itr][0][0] - suitable_points[itr][2][0],
                                                   suitable_points[itr][0][1] - suitable_points[itr][2][1]))
             suitable_points[itr].append(orientation)
-        cv2.imshow('masked image', self.mask_image)
-        cv2.waitKey(0)
+        self.gripping_points = [x[2] for x in suitable_points]
+        # cv2.imshow('masked_image_gripper', self.mask_image)
+        # cv2.waitKey(0)
 
     def closest_pt(self, pt, sel_pts):
         min = sys.maxint
         index = -1
         for i in range(len(sel_pts)):
-            dist_2 = (sel_pts[i][0][0] - pt[0]) ** 2 + (sel_pts[i][0][1] - pt[1]) ** 2
+            dist_2 = (sel_pts[i][0][0] - pt[1]) ** 2 + (sel_pts[i][0][1] - pt[0]) ** 2
             if dist_2 != 0 and dist_2 < min:
                 min = dist_2
                 index = i

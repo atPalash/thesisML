@@ -11,7 +11,8 @@ import keyboard
 
 class RealSenseCamera:
     def __init__(self, object_list=None, realsense_image_cols=848, realsense_image_rows=480, realsense_image_padding=10,
-                 realsense_camera=True, flt_sz=3, cnny_thrsh=80, cnny_itr=5):
+                 realsense_camera=True, flt_sz=3, cnny_thrsh=80, cnny_itr=5, area_threshold=1000):
+        self.object_area_threshold = area_threshold
         self.realsense_present = realsense_camera
         self.realsense_img_cols = realsense_image_cols
         self.realsense_img_rows = realsense_image_rows
@@ -213,7 +214,7 @@ class RealSenseCamera:
 
                 for c in cnts:
                     # if the contour is not sufficiently large, ignore it
-                    if cv2.contourArea(c) < 1000:
+                    if cv2.contourArea(c) < self.object_area_threshold:
                         continue
 
                     # image copy to display results
