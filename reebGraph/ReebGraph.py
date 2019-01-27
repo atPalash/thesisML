@@ -96,6 +96,7 @@ class ReebGraph:
                 if curvature < 3 and thickness < self.gripper_width:
                     pt_info.append(mid_pt)
                     pt_info.append(thickness)
+                    pt_info.append(((self.row_const_col[itr][0],self.row_const_col[itr][1]), (self.row_const_col[itr+1][0],self.row_const_col[itr+1][1])))
                     suitable_points.append(pt_info)
 
         elif col_const_row:
@@ -111,6 +112,8 @@ class ReebGraph:
                 if curvature < 3 and thickness < self.gripper_width:
                     pt_info.append(mid_pt)
                     pt_info.append(thickness)
+                    pt_info.append(((self.col_const_row[itr][0],self.col_const_row[itr][1]), (self.col_const_row[itr+1][0]
+                                                                                              ,self.col_const_row[itr+1][1])))
                     suitable_points.append(pt_info)
         selected_pts = []
 
@@ -119,15 +122,18 @@ class ReebGraph:
             # sel_pts.append(pt[0])
             cv2.circle(self.mask_image, (pt[0][1], pt[0][0]), 1, (0, 255, 255), -1)
 
-        for itr in range(len(selected_pts)):
-            nearest = self.contour[self.closest_pt(selected_pts[itr], self.contour)]
-            suitable_points[itr].append((nearest[0][0], nearest[0][1]))
-            orientation = math.degrees(math.atan2(suitable_points[itr][0][0] - suitable_points[itr][2][0],
-                                                  suitable_points[itr][0][1] - suitable_points[itr][2][1]))
+        for itr in range(len(suitable_points)):
+            nearest1 = self.contour[self.closest_pt(suitable_points[itr][2][0], self.contour)]
+            suitable_points[itr].append((nearest1[0][0], nearest1[0][1]))
+            nearest2 = self.contour[self.closest_pt(suitable_points[itr][2][1], self.contour)]
+            suitable_points[itr].append((nearest2[0][0], nearest2[0][1]))
+            orientation = math.degrees(math.atan2(nearest2[0][1] - nearest1[0][1],
+                                                  nearest2[0][1] - nearest1[0][0]))
             suitable_points[itr].append(orientation)
-        self.gripping_points = [x[2] for x in suitable_points]
-        # cv2.imshow('masked_image_gripper', self.mask_image)
-        # cv2.waitKey(0)
+        self.gripping_points = [(x[3], x[4], x[5]) for x in suitable_points]
+        cv2.imshow('masked_image_gripper', self.mask_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
     def closest_pt(self, pt, sel_pts):
         min = sys.maxint

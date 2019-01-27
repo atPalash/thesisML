@@ -35,17 +35,28 @@ if __name__ == "__main__":
 
         # for c_pts in img['contour']:
         for c_pts in gripping_points:
-            cv2.circle(entire_image, c_pts, 1, (255, 255, 0), -1)
-            x_cord = 0
-            y_cord = 0
-            z_cord = 0
+            x_cord_1 = 0
+            y_cord_1 = 0
+            z_cord_1 = 0
+            x_cord_2 = 0
+            y_cord_2 = 0
+            z_cord_2 = 0
             for contour_pt in image_contour_xyz:
-                if contour_pt[0][0][0] == c_pts[0] and contour_pt[0][0][1] == c_pts[1]:
-                    x_cord = int(contour_pt[1][0]*100)
-                    y_cord = int(contour_pt[1][1]*100)
-                    z_cord = int(contour_pt[1][2]*100)
-            cv2.putText(entire_image, "({x}, {y}, {z})".format(x=x_cord, y=y_cord, z=z_cord), c_pts,
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 0), 1)
+                if contour_pt[0][0][0] == c_pts[0][0] and contour_pt[0][0][1] == c_pts[0][1]:
+                    x_cord_1 = int(contour_pt[1][0]*100)
+                    y_cord_1 = int(contour_pt[1][1]*100)
+                    z_cord_1 = int(contour_pt[1][2]*100)
+                if contour_pt[0][0][0] == c_pts[1][0] and contour_pt[0][0][1] == c_pts[1][1]:
+                    x_cord_2 = int(contour_pt[1][0] * 100)
+                    y_cord_2 = int(contour_pt[1][1] * 100)
+                    z_cord_2 = int(contour_pt[1][2] * 100)
+            if count % 100 is 0:
+                cv2.circle(entire_image, c_pts[0], 1, (255, 255, 0), -1)
+                cv2.circle(entire_image, c_pts[1], 1, (0, 255, 255), -1)
+                cv2.putText(entire_image, "({x}, {y}, {z}, {o})".format(x=x_cord_1, y=y_cord_1, z=z_cord_1, o=c_pts[2]), c_pts[0],
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 0), 1)
+                cv2.putText(entire_image, "({x}, {y}, {z}, {o})".format(x=x_cord_2, y=y_cord_2, z=z_cord_2, o=c_pts[2]), c_pts[1],
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 255), 1)
             count = count + 1
         cv2.imshow('detected_obj', image_rgb)
         cv2.imshow('entire image', entire_image)
