@@ -213,6 +213,7 @@ class RealSenseCamera:
                 (cnts, _) = contours.sort_contours(cnts)
 
                 for c in cnts:
+                    area_ = cv2.contourArea(c)
                     # if the contour is not sufficiently large, ignore it
                     if cv2.contourArea(c) < self.object_area_threshold:
                         continue
@@ -244,7 +245,7 @@ class RealSenseCamera:
                     # neglect if object is outside the workspace boundary
                     if col_min < self.realsense_image_padding or col_max > self.realsense_img_cols \
                             or row_min < self.realsense_image_padding or row_max > self.realsense_img_rows:
-                        # print "object out of camera view"
+                        print "object out of camera view"
                         continue
                     else:
                         # make a copy of RGB image(with border) and crop out the object area as defined by bounding box
@@ -274,19 +275,19 @@ class RealSenseCamera:
                                                    'BGRD': BGRD_detected_img, 'contour': c}
                                 self.detected_object_images.append(object_dict)
                                 # show original image of the workspace and detected object together
-                                # try:
-                                #     images = np.hstack(
-                                #         (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
-                                #     # images = np.hstack((orig[:, :, 0], edged))
-                                # except Exception as e:
-                                #     print(e)
-                                #     continue
+                                try:
+                                    images = np.hstack(
+                                        (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
+                                    # images = np.hstack((orig[:, :, 0], edged))
+                                except Exception as e:
+                                    print(e)
+                                    continue
 
                                 # Show images
-                                # cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-                                # cv2.imshow('RealSense', images)
-                                # cv2.waitKey(0)
-                                # cv2.destroyAllWindows()
+                                cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+                                cv2.imshow('RealSense', images)
+                                cv2.waitKey(0)
+                                cv2.destroyAllWindows()
                             except:
                                 continue
                         else:
@@ -419,18 +420,19 @@ class RealSenseCamera:
 
 
 if __name__ == "__main__":
-    realsense_img_cols = 848
-    realsense_img_rows = 480
+    realsense_img_cols = 1280
+    realsense_img_rows = 720
     list_of_objects = {97: 'objA', 98: 'objB', 99: 'objC', 100: 'objD'}
     image_padding = 10
     reference_pix = (40, 40)
     padding_around_reference_pix = 10
     realsense_present = True
     if realsense_present:
-        camera = RealSenseCamera(list_of_objects, realsense_img_cols, realsense_img_rows, image_padding,
-                                 realsense_present)
+        camera = RealSenseCamera(None, realsense_img_cols, realsense_img_rows, image_padding,
+                                 realsense_present, area_threshold=1000)
         camera.set_reference_pixel(reference_pix, padding_around_reference_pix)
         camera.start_streaming()
+        camera.get_image_data()
     else:
         test_image_path = '/home/palash/thesis/thesisML/objectSelection/images/4_Color.png'
         camera = RealSenseCamera(None, 1280, 720, image_padding, realsense_present)

@@ -3,6 +3,7 @@
 
 # import the necessary packages
 import os
+import random
 
 from keras.preprocessing.image import img_to_array
 from keras.models import load_model
@@ -11,33 +12,35 @@ import imutils
 from imutils import paths
 import cv2
 
-imagePaths = sorted(list(paths.list_images('images/sample_images/objB')))
-classes = 4
+imagePaths = sorted(list(paths.list_images('images/training')))
+random.seed(42)
+random.shuffle(imagePaths)
+classes = 3
 # load the trained convolutional neural network
 print("[INFO] loading network...")
-model = load_model('models/weights_best_EDGED.hdf5')
+model = load_model('models/weights_best_RGB_3class.hdf5')
 
 print model.summary()
-list_of_objects = {0: 'objA', 1: 'objB', 2: 'objC', 3: 'objD'}
+list_of_objects = {0: 'objA', 1: 'objB', 2: 'objD'}
 count = 0
 IM_SIZE = 200
-depth = 1
+depth = 3
 images = {}
 image_BGRD = np.zeros((200, 200, depth))
 
 # loop over the input images
 for imagePath in imagePaths:
     # load the image, pre-process it, and store it in the data list
-    label = imagePath.split(os.path.sep)[2]
-    image = imagePath.split(os.path.sep)[3].split('_')
+    label = imagePath.split(os.path.sep)[-2]
+    image = imagePath.split(os.path.sep)[-1].split('_')
 
-    # if image[1] == 'RGB.png':
-    #     image_rgb = cv2.imread(imagePath)
-    #     orig = image_rgb.copy()
-    #     image_rgb = cv2.resize(image_rgb, (IM_SIZE, IM_SIZE))
-        # image_rgb = img_to_array(image_rgb)
-        # image_BGRD[:, :, 0:3] = image_rgb
-        # count = count + 1
+    if image[1] == 'RGB.png':
+        image_rgb = cv2.imread(imagePath)
+        orig = image_rgb.copy()
+        image_rgb = cv2.resize(image_rgb, (IM_SIZE, IM_SIZE))
+        image_rgb = img_to_array(image_rgb)
+        image_BGRD[:, :, 0:3] = image_rgb
+        count = count + 1
     # if image[1] == 'DEPTH.png':
     #     image_depth = cv2.imread(imagePath)
     #     image_depth = cv2.cvtColor(image_depth, cv2.COLOR_BGR2GRAY)
@@ -45,14 +48,14 @@ for imagePath in imagePaths:
     #     # image_depth = img_to_array(image_depth)
     #     image_BGRD[:, :, 3] = image_depth
     #     count = count + 1
-    if image[1] == 'EDGED.png':
-        image_edged = cv2.imread(imagePath)
-        orig = image_edged.copy()
-        image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
-        image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
-
-        image_BGRD[:, :, 0] = image_edged
-        count = count + 1
+    # if image[1] == 'EDGED.png':
+    #     image_edged = cv2.imread(imagePath)
+    #     orig = image_edged.copy()
+    #     image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
+    #     image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
+    #
+    #     image_BGRD[:, :, 0] = image_edged
+    #     count = count + 1
 
     if count == 1:
         image_BGRD = cv2.resize(image_BGRD, (200, 200))

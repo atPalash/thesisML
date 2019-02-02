@@ -1,26 +1,24 @@
+# from sklearn.preprocessing import LabelEncoder
+# from keras.preprocessing.image import img_to_array
+# import argparse
+import random
 import matplotlib
-
 matplotlib.use("Agg")
-
 # import the necessary packages
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-from keras.preprocessing.image import img_to_array
 from keras.utils import to_categorical
 from keras.callbacks import ModelCheckpoint
 from pyimagesearch.lenet import LeNet
 from imutils import paths
 import matplotlib.pyplot as plt
 import numpy as np
-import argparse
-import random
 import cv2
 import os
 
 
-list_of_objects = {'objA': 0, 'objB': 1, 'objC': 2, 'objD': 3}
+list_of_objects = {'objA': 0, 'objB': 1, 'objD': 2} #, 'objD': 3}
 # initialize the number of epochs to train for, initia learning rate,
 # and batch size
 EPOCHS = 30
@@ -31,26 +29,30 @@ IM_SIZE = 200
 print("[INFO] loading images...")
 labels = []
 data = []
-classes = 4
+classes = 3
 # grab the image paths and randomly shuffle them
-imagePaths = sorted(list(paths.list_images('images/training')))
-# random.seed(42)
-# random.shuffle(imagePaths)
+imagePaths = sorted(list(paths.list_images('images/trainingGenerator')))
+random.seed(42)
+random.shuffle(imagePaths)
 count = 0
-depth = 1
+img_count = 0
+depth = 3
 images = {}
 image_BGRD = np.zeros((200, 200, depth))
 # loop over the input images
 for imagePath in imagePaths:
-    # load the image, pre-process it, and store it in the data list
-    label = imagePath.split(os.path.sep)[2]
-    image = imagePath.split(os.path.sep)[3].split('_')
+    if img_count > 150:
+        break
 
-    # if image[1] == 'RGB.png':
-    #     image_rgb = cv2.imread(imagePath)
-    #     image_rgb = cv2.resize(image_rgb, (IM_SIZE, IM_SIZE))
-        # image_BGRD[:, :, 0:3] = image_rgb
-        # count = count + 1
+    # load the image, pre-process it, and store it in the data list
+    label = imagePath.split(os.path.sep)[-2]
+    image = imagePath.split(os.path.sep)[-1].split('_')
+
+    if image[1] == 'RGB.png':
+        image_rgb = cv2.imread(imagePath)
+        image_rgb = cv2.resize(image_rgb, (IM_SIZE, IM_SIZE))
+        image_BGRD[:, :, 0:3] = image_rgb
+        count = count + 1
     # if image[1] == 'DEPTH.png':
     #     image_depth = cv2.imread(imagePath)
     #     image_depth = cv2.cvtColor(image_depth, cv2.COLOR_BGR2GRAY)
@@ -58,12 +60,12 @@ for imagePath in imagePaths:
     #     image_depth = img_to_array(image_depth)
         # image_BGRD[:, :, 3] = image_depth
         # count = count + 1
-    if image[1] == 'EDGED.png':
-        image_edged = cv2.imread(imagePath)
-        image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
-        image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
-        image_BGRD[:, :, 0] = image_edged
-        count = count + 1
+    # if image[1] == 'EDGED.png':
+    #     image_edged = cv2.imread(imagePath)
+    #     image_edged = cv2.cvtColor(image_edged, cv2.COLOR_BGR2GRAY)
+    #     image_edged = cv2.resize(image_edged, (IM_SIZE, IM_SIZE))
+    #     image_BGRD[:, :, 0] = image_edged
+    #     count = count + 1
     if count == 1:
         data.append(image_BGRD)
         image_BGRD = np.zeros((200, 200, depth))
@@ -72,6 +74,7 @@ for imagePath in imagePaths:
         label = list_of_objects[label]
         labels.append(label)
         count = 0
+        img_count = img_count + 1
 
 # scale the raw pixel intensities to the range [0, 1]
 data = np.array(data, dtype="float") / 255.0
@@ -101,7 +104,7 @@ model.compile(loss="categorical_crossentropy", optimizer=opt,
               metrics=["accuracy"])
 
 # checkpoint best model
-filepath = "models/weights_best_EDGED.hdf5"
+filepath = "models/weights_best_RGB_3class.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint]
 
