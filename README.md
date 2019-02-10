@@ -24,4 +24,9 @@ The following packages are developed and utilised:
 for a two fingered gripper. Main code for gripping algorithm.
 
 * vision : consists of the following:
-    * generateTrainingData.py : 
+    * generateTrainingData.py : camera node for generating training image data
+    asks user for object of the new object in workspace.
+    * visionNodeROS.py : detects object and send gripping coordinates to robot.
+    
+
+* Please check video: 
