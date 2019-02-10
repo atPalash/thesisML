@@ -2,6 +2,7 @@
 import math
 import numpy as np
 import rospy
+import geometry_msgs
 from geometry_msgs.msg import PoseStamped
 from tf.transformations import quaternion_from_euler
 
@@ -9,7 +10,7 @@ from objectSelection import objectSelectorOOP
 from objectSelection import objectIdentifier
 from reebGraph import ReebGraph
 from helpers import FrameTransformation
-
+from std_msgs.msg import Float64MultiArray
 
 class GripperData:
     def __init__(self):
@@ -32,28 +33,36 @@ class GripperData:
 
 
 def detect_object_and_gripping_point(data, arg):
-    end_effector_RF_position = data.pose.position
-    end_effector_RF_orientation = data.pose.orientation
-    rotation_matrix_wrt_camera = FrameTransformation.quaternion_to_rotation_matrix(end_effector_RF_orientation)
-    tranformation_matrix_wrt_camera = FrameTransformation.transformation_matrix(rotation_matrix_wrt_camera,
-                                                                                end_effector_RF_position)
-    object_location_wrt_camera = [[arg[0]['x']], [arg[0]['y']], [arg[0]['z']], [1]]
-    object_location_wrt_robot_baseframe = np.dot(tranformation_matrix_wrt_camera, object_location_wrt_camera)
-    object_location_wrt_robot_baseframe = {'x': object_location_wrt_robot_baseframe[0][0],
-                                           'y': object_location_wrt_robot_baseframe[1][0],
-                                           'z': object_location_wrt_robot_baseframe[2][0]}
-    object_quaternion_wrt_robot_baseframe = quaternion_from_euler(math.radians(179.0), math.radians(0.0),
-                                                                  math.radians((90 + arg[0]['o'])))
-    object_quaternion_wrt_robot_baseframe = {'x': object_quaternion_wrt_robot_baseframe[0],
-                                             'y': object_quaternion_wrt_robot_baseframe[1],
-                                             'z': object_quaternion_wrt_robot_baseframe[2],
-                                             'w': object_quaternion_wrt_robot_baseframe[3]}
-    arg[1].set_gripper(object_location_wrt_robot_baseframe, object_quaternion_wrt_robot_baseframe)
+    z_buffer = 0.04
+    tranformation_matrix_wrt_camera = []
+    if type(data) is PoseStamped:
+        end_effector_RF_position = data.pose.position
+        end_effector_RF_orientation = data.pose.orientation
+        rotation_matrix_wrt_camera = FrameTransformation.quaternion_to_rotation_matrix(end_effector_RF_orientation)
+        tranformation_matrix_wrt_camera = FrameTransformation.transformation_matrix(rotation_matrix_wrt_camera,
+                                                                                    end_effector_RF_position, z_buffer)
+    elif type(data) is Float64MultiArray:
+        print(len(data.data))
+        # tranformation_matrix_wrt_camera = np.reshape(data, (4, 4))
+
+    # object_location_wrt_camera = [[arg[0]['x']], [arg[0]['y']], [arg[0]['z']], [1]]
+    # object_location_wrt_robot_baseframe = np.dot(tranformation_matrix_wrt_camera, object_location_wrt_camera)
+    # object_location_wrt_robot_baseframe = {'x': object_location_wrt_robot_baseframe[0][0],
+    #                                        'y': object_location_wrt_robot_baseframe[1][0],
+    #                                        'z': object_location_wrt_robot_baseframe[2][0]}
+    # object_quaternion_wrt_robot_baseframe = quaternion_from_euler(math.radians(179.0), math.radians(0.0),
+    #                                                               math.radians((90 + arg[0]['o'])))
+    # object_quaternion_wrt_robot_baseframe = {'x': object_quaternion_wrt_robot_baseframe[0],
+    #                                          'y': object_quaternion_wrt_robot_baseframe[1],
+    #                                          'z': object_quaternion_wrt_robot_baseframe[2],
+    #                                          'w': object_quaternion_wrt_robot_baseframe[3]}
+    # arg[1].set_gripper(object_location_wrt_robot_baseframe, object_quaternion_wrt_robot_baseframe)
 
 
 if __name__ == "__main__":
     object_list_keypress = {'objA': 97, 'objB': 98, 'objC': 99, 'objD': 100}
-    object_name = raw_input('Enter object to grasp: ')
+    # object_name = raw_input('Enter object to grasp: ')
+    object_name = 'objB'
 
     if object_name not in object_list_keypress.keys():
         print 'No object with name found'
@@ -105,11 +114,16 @@ if __name__ == "__main__":
     object_location = {'x': x_cord_1, 'y': y_cord_1, 'z': z_cord_1, 'o': orientation}
     rospy.init_node('camera_node_for_gripping', anonymous=True)
     gripping_point_pub = rospy.Publisher('reply_gripping_point', PoseStamped, queue_size=1)
-    gripping_point_sub = rospy.Subscriber('find_gripping_point', PoseStamped, detect_object_and_gripping_point,
+    gripping_point_sub = rospy.Subscriber('franka_current_position', Float64MultiArray, detect_object_and_gripping_point,
                                           (object_location, gripper_data))
+
+    # current_state_sub = rospy.Subscriber('find_current_state', PoseStamped, set_franka_state)
+    # franka_move_to_sub = rospy.Subscriber('franka_move_to', Float64MultiArray, detect_object_and_gripping_point,
+    #                                       (object_location, gripper_data))
 
     rate = rospy.Rate(10)  # 10hz
     while not rospy.is_shutdown():
         if gripper_data.gripper_set:
+            # print gripper_data.pose_goal
             gripping_point_pub.publish(gripper_data.pose_goal)
             rate.sleep()

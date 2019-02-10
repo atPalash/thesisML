@@ -30,8 +30,8 @@ def quaternion_to_rotation_matrix(orientation):
          [xZ - wY, yZ + wX, 1.0 - (xX + yY)]])
 
 
-def transformation_matrix(rotation_matrix, position):
-    transformation_mat = np.concatenate((rotation_matrix, [[position.x], [position.y], [position.z]]), 1)
+def transformation_matrix(rotation_matrix, position, z_buf):
+    transformation_mat = np.concatenate((rotation_matrix, [[position.x], [position.y], [position.z + z_buf]]), 1)
     transformation_mat = np.concatenate((transformation_mat, [[0, 0, 0, 1]]), 0)
     return transformation_mat
 

@@ -36,6 +36,7 @@ if __name__ == "__main__":
         count = 0
 
         # for c_pts in img['contour']:
+        print "gripping xyz"
         for c_pts in gripping_points:
             x_cord_1 = 0
             y_cord_1 = 0
@@ -43,25 +44,29 @@ if __name__ == "__main__":
             x_cord_2 = 0
             y_cord_2 = 0
             z_cord_2 = 0
+            check = False
             for contour_pt in image_contour_xyz:
                 if contour_pt[0][0][0] == c_pts[0][0] and contour_pt[0][0][1] == c_pts[0][1]:
                     x_cord_1 = contour_pt[1][0]
                     y_cord_1 = contour_pt[1][1]
                     z_cord_1 = contour_pt[1][2]
+                    check = True
                 if contour_pt[0][0][0] == c_pts[1][0] and contour_pt[0][0][1] == c_pts[1][1]:
                     x_cord_2 = contour_pt[1][0]
                     y_cord_2 = contour_pt[1][1]
                     z_cord_2 = contour_pt[1][2]
+                    check =True
+            if check:
+                cv2.circle(entire_image, c_pts[0], 1, (255, 255, 0), -1)
+                cv2.circle(entire_image, c_pts[1], 1, (0, 255, 255), -1)
+            # cv2.putText(entire_image, "({o:.1f})".format(o=orientation), (50, 50),
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 0), 1)
+            # cv2.putText(entire_image, "({x:.1f}, {y:.1f}, {z:.1f})".format(x=x_cord_1, y=y_cord_1, z=z_cord_1), c_pts[0],
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 0), 1)
+            # cv2.putText(entire_image, "({x:.1f}, {y:.1f}, {z:.1f})".format(x=x_cord_2, y=y_cord_2, z=z_cord_2), c_pts[1],
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 255), 1)
 
-            cv2.circle(entire_image, c_pts[0], 1, (255, 255, 0), -1)
-            cv2.circle(entire_image, c_pts[1], 1, (0, 255, 255), -1)
-            cv2.putText(entire_image, "({o:.1f})".format(o=orientation), (50, 50),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 0), 1)
-            cv2.putText(entire_image, "({x:.1f}, {y:.1f}, {z:.1f})".format(x=x_cord_1, y=y_cord_1, z=z_cord_1), c_pts[0],
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 0), 1)
-            cv2.putText(entire_image, "({x:.1f}, {y:.1f}, {z:.1f})".format(x=x_cord_2, y=y_cord_2, z=z_cord_2), c_pts[1],
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 255), 1)
-            print x_cord_1, y_cord_1, z_cord_1
+                print x_cord_1, y_cord_1, z_cord_1
         cv2.imshow('detected_obj', image_rgb)
         cv2.imshow('entire image', entire_image)
         cv2.waitKey(0)
