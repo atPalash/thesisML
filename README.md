@@ -1,4 +1,6 @@
 # thesisML
+* Please check video with subtitles: https://www.youtube.com/watch?v=mzHKab-bNOM
+
 This repository contains packages for object segmentation and object detection for the thesis.
 The following packages are developed and utilised:
 
@@ -29,4 +31,3 @@ for a two fingered gripper. Main code for gripping algorithm.
     * visionNodeROS.py : detects object and send gripping coordinates to robot.
     
 
-* Please check video: 
