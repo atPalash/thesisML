@@ -147,7 +147,8 @@ class ReebGraph:
             suitable_points[itr].append((nearest2[0][0], nearest2[0][1]))
             suitable_points[itr].append(orientation_weight + distance_weight)
         suitable_points.sort(key=lambda pt_: pt_[5])
-        self.gripping_points = [(suitable_points[-1][3], suitable_points[-1][4])]
+        for i in range(-1, -50, -1):
+            self.gripping_points.append((suitable_points[i][3], suitable_points[i][4]))
         # cv2.imshow('masked_image_gripper', self.mask_image)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()

@@ -241,11 +241,14 @@ class RealSenseCamera:
                     col_max = max(box[:, 0])
                     row_min = min(box[:, 1])
                     row_max = max(box[:, 1])
-
+                    cv2.imshow('realsense_view', orig)
+                    cv2.waitKey(0)
+                    cv2.destroyAllWindows()
                     # neglect if object is outside the workspace boundary
                     if col_min < self.realsense_image_padding or col_max > self.realsense_img_cols \
                             or row_min < self.realsense_image_padding or row_max > self.realsense_img_rows:
                         print "object out of camera view"
+
                         continue
                     else:
                         # make a copy of RGB image(with border) and crop out the object area as defined by bounding box
@@ -275,19 +278,19 @@ class RealSenseCamera:
                                                    'BGRD': BGRD_detected_img, 'contour': c}
                                 self.detected_object_images.append(object_dict)
                                 # show original image of the workspace and detected object together
-                                try:
-                                    images = np.hstack(
-                                        (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
-                                    # images = np.hstack((orig[:, :, 0], edged))
-                                except Exception as e:
-                                    print(e)
-                                    continue
-
-                                # Show images
-                                cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-                                cv2.imshow('RealSense', images)
-                                cv2.waitKey(0)
-                                cv2.destroyAllWindows()
+                                # try:
+                                #     images = np.hstack(
+                                #         (orig, cv2.resize(object_detected_img, (np.shape(orig)[1], np.shape(orig)[0]))))
+                                #     # images = np.hstack((orig[:, :, 0], edged))
+                                # except Exception as e:
+                                #     print(e)
+                                #     continue
+                                #
+                                # # Show images
+                                # cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+                                # cv2.imshow('RealSense', images)
+                                # cv2.waitKey(0)
+                                # cv2.destroyAllWindows()
                             except:
                                 continue
                         else:
