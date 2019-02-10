@@ -12,6 +12,7 @@ from reebGraph import ReebGraph
 from helpers import FrameTransformation
 from std_msgs.msg import Float64MultiArray
 
+
 class GripperData:
     def __init__(self):
         self.pose_goal = PoseStamped()
@@ -114,7 +115,8 @@ if __name__ == "__main__":
     object_location = {'x': x_cord_1, 'y': y_cord_1, 'z': z_cord_1, 'o': orientation}
     rospy.init_node('camera_node_for_gripping', anonymous=True)
     gripping_point_pub = rospy.Publisher('reply_gripping_point', PoseStamped, queue_size=1)
-    gripping_point_sub = rospy.Subscriber('franka_current_position', Float64MultiArray, detect_object_and_gripping_point,
+    gripping_point_sub = rospy.Subscriber('franka_current_position', Float64MultiArray,
+                                          detect_object_and_gripping_point,
                                           (object_location, gripper_data))
 
     # current_state_sub = rospy.Subscriber('find_current_state', PoseStamped, set_franka_state)
