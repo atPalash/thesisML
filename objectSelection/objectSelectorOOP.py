@@ -241,9 +241,9 @@ class RealSenseCamera:
                     col_max = max(box[:, 0])
                     row_min = min(box[:, 1])
                     row_max = max(box[:, 1])
-                    cv2.imshow('realsense_view', orig)
-                    cv2.waitKey(0)
-                    cv2.destroyAllWindows()
+                    # cv2.imshow('realsense_view', orig)
+                    # cv2.waitKey(0)
+                    # cv2.destroyAllWindows()
                     # neglect if object is outside the workspace boundary
                     if col_min < self.realsense_image_padding or col_max > self.realsense_img_cols \
                             or row_min < self.realsense_image_padding or row_max > self.realsense_img_rows:
@@ -393,12 +393,14 @@ class RealSenseCamera:
             image_path = 'images/sample_images/' + self.list_of_objects[key_press]
         else:
             image_path = image_pth
+        print(image_path.split('/')[-2])
         try:
             file = os.listdir(image_path)
             filenum = len(file) / 3 + 1
-            cv2.imwrite(image_path + image_path.split('/')[-1] + str(filenum) + '_RGB.png', object_detected_img)
-            cv2.imwrite(image_path + image_path.split('/')[-1] + str(filenum) + '_EDGED.png', edge_detected_img)
-            cv2.imwrite(image_path + image_path.split('/')[-1] + str(filenum) + '_DEPTH.png', BGRD_detected_img)
+
+            cv2.imwrite(image_path + str(filenum) + '_RGB.png', object_detected_img)
+            cv2.imwrite(image_path + str(filenum) + '_EDGED.png', edge_detected_img)
+            cv2.imwrite(image_path + str(filenum) + '_DEPTH.png', BGRD_detected_img)
         except:
             if self.list_of_objects is not None:
                 press_str = ""
@@ -408,17 +410,18 @@ class RealSenseCamera:
                 print 'This object is not in list, press ' + press_str
 
     def take_snap(self, data, object_type):
+
         self.get_image_data()
         images = self.detected_object_images
-
+        print("snap taken", len(images))
         if len(images) is 1:
             for img in images:
                 image_rgb = img['RGB']
                 image_depth = img['BGRD']
                 image_edged = img['EDGED']
                 self.write_data(None, image_rgb, image_edged, image_depth,
-                                  image_pth='/home/palash/thesis/thesisML/objectSelection/images/sample_images/training_generator/'
-                                            + object_type + '/')
+                                  image_pth='/home/palash/thesis/thesisML/objectSelection/images/trainingGenerator/' +
+                                object_type + '/')
         self.snap_taken = True
 
 

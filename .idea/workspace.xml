@@ -2,15 +2,459 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9a188d3-e1a5-4abb-af14-33b07840f47f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/thesisML.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/100_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/100_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/100_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/101_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/101_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/101_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/102_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/102_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/102_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/103_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/103_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/103_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/104_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/104_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/104_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/105_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/105_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/105_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/106_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/106_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/106_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/107_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/107_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/107_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/108_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/114_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/114_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/114_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/115_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/115_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/115_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/116_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/116_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/116_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/117_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/117_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/117_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/118_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/118_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/118_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/119_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/119_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/119_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/11_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/11_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/11_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/127_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/127_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/127_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/128_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/128_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/128_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/129_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/129_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/129_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/12_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/12_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/12_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/130_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/130_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/130_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/131_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/131_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/131_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/132_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/132_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/132_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/133_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/133_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/133_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/134_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/134_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/134_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/135_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/135_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/135_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/136_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/136_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/136_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/137_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/137_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/137_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/138_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/138_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/138_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/139_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/139_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/139_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/140_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/140_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/140_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/141_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/141_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/141_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/142_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/142_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/142_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/143_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/143_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/143_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/144_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/144_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/144_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/145_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/145_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/145_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/146_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/146_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/146_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/147_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/147_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/147_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/148_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/148_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/148_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/149_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/149_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/149_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/14_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/14_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/14_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/150_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/150_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/150_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/151_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/151_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/151_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/152_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/152_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/152_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/153_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/153_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/153_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/154_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/154_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/154_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/155_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/155_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/155_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/156_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/156_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/156_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/157_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/157_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/157_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/158_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/158_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/158_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/159_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/159_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/159_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/15_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/15_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/15_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/160_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/160_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/160_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/161_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/161_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/161_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/162_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/162_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/162_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/163_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/163_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/163_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/164_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/164_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/164_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/165_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/165_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/165_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/166_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/166_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/166_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/167_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/167_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/167_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/168_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/168_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/168_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/169_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/169_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/169_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/16_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/16_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/16_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/170_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/170_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/170_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/171_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/171_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/171_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/172_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/172_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/172_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/173_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/173_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/173_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/174_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/174_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/174_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/175_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/175_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/175_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/176_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/176_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/176_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/177_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/177_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/177_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/178_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/178_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/178_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/179_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/179_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/179_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/180_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/180_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/180_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/181_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/181_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/181_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/182_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/182_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/182_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/183_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/183_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/183_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/184_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/184_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/184_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/185_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/185_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/185_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/186_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/186_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/186_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/187_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/187_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/187_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/229_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/229_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/22_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/22_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/22_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/230_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/230_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/230_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/231_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/231_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/231_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/232_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/232_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/232_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/23_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/23_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/23_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/24_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/24_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/24_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/25_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/25_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/25_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/26_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/26_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/26_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/27_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/27_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/27_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/28_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/28_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/28_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/29_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/29_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/29_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/2_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/2_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/2_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/30_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/30_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/30_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/31_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/31_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/31_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/33_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/33_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/33_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/34_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/34_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/34_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/35_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/35_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/35_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/36_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/36_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/36_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/37_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/37_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/37_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/3_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/3_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/3_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/43_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/43_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/43_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/45_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/45_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/45_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/46_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/46_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/46_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/47_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/47_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/47_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/48_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/48_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/48_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/49_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/49_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/49_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/4_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/4_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/4_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/50_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/50_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/50_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/51_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/51_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/51_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/53_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/53_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/53_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/54_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/54_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/54_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/55_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/55_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/55_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/56_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/56_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/56_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/5_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/5_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/5_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/60_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/60_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/60_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/61_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/61_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/61_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/62_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/62_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/62_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/63_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/63_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/63_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/64_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/64_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/64_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/65_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/65_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/65_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/66_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/66_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/66_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/67_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/67_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/67_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/68_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/68_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/68_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/69_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/69_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/69_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/6_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/6_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/6_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/70_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/70_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/70_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/71_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/71_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/71_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/72_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/72_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/72_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/73_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/73_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/73_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/74_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/74_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/74_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/75_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/75_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/75_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/76_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/76_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/76_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/77_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/77_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/77_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/78_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/78_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/78_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/7_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/7_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/7_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/81_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/81_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/81_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/82_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/82_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/82_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/83_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/83_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/83_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/84_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/84_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/84_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/85_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/85_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/85_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/86_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/86_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/86_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/87_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/87_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/87_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/88_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/88_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/88_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/8_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/8_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/8_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/93_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/93_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/93_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/97_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/97_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/97_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/98_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/98_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/98_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/99_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/99_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/99_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/9_DEPTH.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/9_EDGED.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/9_RGB.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objectSelection/objectSelectorOOP.py" beforeDir="false" afterPath="$PROJECT_DIR$/objectSelection/objectSelectorOOP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vision/generateTraningData.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision/generateTraningData.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +465,8 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/thesisML$train_network.coverage" NAME="train_network Coverage Results" MODIFIED="1548796468252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/objectSelection" />
     <SUITE FILE_PATH="coverage/thesisML$test_network.coverage" NAME="test_network Coverage Results" MODIFIED="1548796771365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/objectSelection" />
-    <SUITE FILE_PATH="coverage/thesisML$visionNode.coverage" NAME="visionNode Coverage Results" MODIFIED="1549684227835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vision" />
+    <SUITE FILE_PATH="coverage/thesisML$visionNode.coverage" NAME="visionNode Coverage Results" MODIFIED="1550267172631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vision" />
+    <SUITE FILE_PATH="coverage/thesisML$generateTraningData.coverage" NAME="generateTraningData Coverage Results" MODIFIED="1550267249496" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vision" />
     <SUITE FILE_PATH="coverage/thesisML$miscTest.coverage" NAME="miscTest Coverage Results" MODIFIED="1549160836662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vision" />
     <SUITE FILE_PATH="coverage/thesisML$objectSelectorOOP.coverage" NAME="objectSelectorOOP Coverage Results" MODIFIED="1549043771395" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/objectSelection" />
     <SUITE FILE_PATH="coverage/thesisML$visionNodeROS.coverage" NAME="visionNodeROS Coverage Results" MODIFIED="1549681935506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vision" />
@@ -29,11 +474,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/vision/generateTraningData.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
-              <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
+            <state relative-caret-position="152">
+              <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
               <folding>
                 <element signature="e#23#35#0" expanded="true" />
               </folding>
@@ -41,35 +486,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="152">
-                <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vision/visionNode.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vision/visionNodeROS.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>realsense_vie</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -86,13 +508,14 @@
         <option value="$PROJECT_DIR$/objectSelection/test_network.py" />
         <option value="$PROJECT_DIR$/reebGraph/testFile.py" />
         <option value="$PROJECT_DIR$/vision/miscTest.py" />
-        <option value="$PROJECT_DIR$/objectSelection/objectSelectorOOP.py" />
         <option value="$PROJECT_DIR$/vision/test_sub_pub_predator.py" />
         <option value="$PROJECT_DIR$/helpers/FrameTransformation.py" />
         <option value="$PROJECT_DIR$/reebGraph/ReebGraph.py" />
         <option value="$PROJECT_DIR$/vision/visionNode.py" />
         <option value="$PROJECT_DIR$/vision/visionNodeROS.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/objectSelection/objectSelectorOOP.py" />
+        <option value="$PROJECT_DIR$/vision/generateTraningData.py" />
       </list>
     </option>
   </component>
@@ -115,6 +538,11 @@
             <path>
               <item name="thesisML" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="thesisML" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="objectSelection" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="thesisML" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
@@ -143,6 +571,58 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="Python.generateTraningData">
+    <configuration name="generateTraningData" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="thesisML" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/vision" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/vision/generateTraningData.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="visionNode" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="thesisML" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/vision" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/vision/visionNode.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.generateTraningData" />
+        <item itemvalue="Python.visionNode" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -163,14 +643,16 @@
       <workItem from="1549148943355" duration="12780000" />
       <workItem from="1549641219417" duration="101000" />
       <workItem from="1549670789131" duration="7655000" />
-      <workItem from="1549836694519" duration="685000" />
+      <workItem from="1549836694519" duration="757000" />
+      <workItem from="1550261914854" duration="261000" />
+      <workItem from="1550262257578" duration="3921000" />
     </task>
     <task id="LOCAL-00001" summary="writing readme">
-      <created>1549836085030</created>
+      <created>1549838127587</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1549836085030</updated>
+      <updated>1549838127587</updated>
     </task>
     <task id="LOCAL-00002" summary="implemented weight for gripping">
       <created>1549075480407</created>
@@ -193,21 +675,21 @@
       <option name="project" value="LOCAL" />
       <updated>1549154583120</updated>
     </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2573000" />
+    <option name="totallyTimeSpent" value="6827000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="true" />
+    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49858356" visible="true" weight="0.14814815" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49858356" visible="true" weight="0.1514649" />
       <window_info id="Structure" order="1" sideWeight="0.50141644" side_tool="true" weight="0.19402985" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.9677072" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2863114" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.49738768" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -293,35 +775,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vision/generateTraningData.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
-          <folding>
-            <element signature="e#23#35#0" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="304">
+            <caret line="16" column="32" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/3_DEPTH.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vision/visionNodeROS.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-570" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/3_RGB.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/objectSelection/objectSelectorOOP.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="13" column="93" selection-start-line="13" selection-start-column="93" selection-end-line="13" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/1_RGB.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/2_RGB.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/objectSelection/images/trainingGenerator/objD/9_RGB.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/vision/visionNode.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="399">
+          <caret line="21" column="34" lean-forward="true" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vision/visionNodeROS.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="152">
-            <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-          </first_editor>
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/vision/generateTraningData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
+          <folding>
+            <element signature="e#23#35#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
