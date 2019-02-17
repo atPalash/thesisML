@@ -420,8 +420,7 @@ class RealSenseCamera:
                 image_depth = img['BGRD']
                 image_edged = img['EDGED']
                 self.write_data(None, image_rgb, image_edged, image_depth,
-                                  image_pth='/home/palash/thesis/thesisML/objectSelection/images/trainingGenerator/' +
-                                object_type + '/')
+                                  image_pth='../objectSelection/images/trainingGenerator/' + object_type + '/')
         self.snap_taken = True
 
 

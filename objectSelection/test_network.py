@@ -12,7 +12,7 @@ import imutils
 from imutils import paths
 import cv2
 
-imagePaths = sorted(list(paths.list_images('images/training')))
+imagePaths = sorted(list(paths.list_images('images/sample_images/test_Data')))
 random.seed(42)
 random.shuffle(imagePaths)
 classes = 3
@@ -21,7 +21,7 @@ print("[INFO] loading network...")
 model = load_model('models/weights_best_RGB_3class.hdf5')
 
 print model.summary()
-list_of_objects = {0: 'objA', 1: 'objB', 2: 'objD'}
+list_of_objects = {0: 'objA', 1: 'objB', 2: 'objC'}
 count = 0
 IM_SIZE = 200
 depth = 3

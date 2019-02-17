@@ -6,7 +6,7 @@ from reebGraph import ReebGraph
 
 if __name__ == "__main__":
     object_list = {0: 'objA', 1: 'objB', 2: 'objC', 3: 'objD'}
-    selected_model = '/home/palash/thesis/thesisML/objectSelection/models/weights_best_RGB.hdf5'
+    selected_model = '/home/palash/thesis/thesisML/objectSelection/models/weights_best_RGB_3class.hdf5'
     objectIdentifier = objectIdentifier.ObjectIdentfier(selected_model, 4, 3, object_list)
     reeb_graph = ReebGraph.ReebGraph(gripper_width=1000, realtime_cam=True)
 

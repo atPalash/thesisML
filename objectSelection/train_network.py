@@ -17,8 +17,7 @@ import numpy as np
 import cv2
 import os
 
-
-list_of_objects = {'objA': 0, 'objB': 1, 'objD': 2} #, 'objD': 3}
+list_of_objects = {'objA': 0, 'objB': 1, 'objC': 2} #, 'objD': 3}
 # initialize the number of epochs to train for, initia learning rate,
 # and batch size
 EPOCHS = 30
@@ -39,6 +38,7 @@ img_count = 0
 depth = 3
 images = {}
 image_BGRD = np.zeros((200, 200, depth))
+
 # loop over the input images
 for imagePath in imagePaths:
     if img_count > 150:

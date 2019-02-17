@@ -1,6 +1,7 @@
 import math
 import numpy as np
-from tf.transformations import quaternion_from_euler, euler_from_quaternion
+from geometry_msgs.msg import Quaternion
+from tf.transformations import quaternion_from_euler, euler_from_quaternion, quaternion_from_matrix
 
 
 def quaternion_to_rotation_matrix(orientation):
@@ -51,6 +52,18 @@ def euler_to_quaternion(yaw, pitch, roll):
     z = sy * cp * cr - cy * sp * sr
     return [w, x, y, z]
 
+def quaternion_msg_from_matrix(transformation):
+    q = quaternion_from_matrix(transformation)
+    msg = Quaternion()
+    msg.x = q[0]
+
+    msg.y = q[1]
+
+    msg.z = q[2]
+
+    msg.w = q[3]
+
+    return msg
 
 if __name__ == "__main__":
     # wxyz
