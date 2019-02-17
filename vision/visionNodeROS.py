@@ -21,7 +21,7 @@ class GripperData:
         self.gripper_set = False
 
     def set_gripper(self, position=None, orient=None):
-        if position is not None and orientation is not None:
+        if position is not None and orientation is not None and not self.gripper_set:
             self.pose_goal.header.stamp = rospy.Time.now()
             self.pose_goal.header.frame_id = "/panda_link0"
             self.pose_goal.pose.orientation.x = orient['x']
@@ -33,11 +33,13 @@ class GripperData:
             self.pose_goal.pose.position.y = position['y']
             self.pose_goal.pose.position.z = position['z']
             self.gripper_set = True
+            print self.pose_goal
 
 
 def detect_object_and_gripping_point(data, arg):
-    z_buffer = 0.08
-    tranformation_matrix_wrt_camera = []
+    z_buffer = 0
+    tf_endEffector_to_camera = []
+    tf_robotBaseframe_to_end_effector = []
     orientation_EF = 0
     if type(data) is PoseStamped:
         end_effector_RF_position = data.pose.position
@@ -47,12 +49,16 @@ def detect_object_and_gripping_point(data, arg):
                                                                                     end_effector_RF_position, z_buffer)
     elif type(data) is Float64MultiArray:
         current_robot_pose = data.data
-        tranformation_matrix_wrt_camera = np.transpose(np.reshape(current_robot_pose, (4, 4)))
-        print tranformation_matrix_wrt_camera
-        orientation_EF = FrameTransformation.quaternion_msg_from_matrix(tranformation_matrix_wrt_camera)
+        tf_endEffector_to_camera = [ 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0.05, -0.06, 1]
+        tf_endEffector_to_camera = np.transpose(np.reshape(tf_endEffector_to_camera, (4, 4)))
+        tf_robotBaseframe_to_end_effector = np.transpose(np.reshape(current_robot_pose, (4, 4)))
+        orientation_EF = FrameTransformation.quaternion_msg_from_matrix(tf_robotBaseframe_to_end_effector)
+    # print tf_robotBaseframe_to_end_effector
+    object_location_wrt_camera = [[arg[0]['x']], [arg[0]['y']], [arg[0]['z']], [1]]
+    # print object_location_wrt_camera
+    object_location_wrt_endEffector = np.dot(tf_endEffector_to_camera, object_location_wrt_camera)
 
-    object_location_wrt_camera = [[arg[0]['x'] - 0.01], [arg[0]['y'] - 0.05], [arg[0]['z'] + 0.04], [1]]
-    object_location_wrt_robot_baseframe = np.dot(tranformation_matrix_wrt_camera, object_location_wrt_camera)
+    object_location_wrt_robot_baseframe = np.dot(tf_robotBaseframe_to_end_effector, object_location_wrt_endEffector)
     object_location_wrt_robot_baseframe = {'x': object_location_wrt_robot_baseframe[0][0],
                                            'y': object_location_wrt_robot_baseframe[1][0],
                                            'z': object_location_wrt_robot_baseframe[2][0]}
@@ -133,6 +139,7 @@ if __name__ == "__main__":
             cv2.imshow('entire image', entire_image)
             cv2.waitKey(0)
     object_location = {'x': x_cord_1, 'y': y_cord_1, 'z': z_cord_1, 'o': orientation}
+    print object_location
     rospy.init_node('camera_node_for_gripping', anonymous=True)
     gripping_point_pub = rospy.Publisher('reply_gripping_point', PoseStamped, queue_size=1)
     gripping_point_sub = rospy.Subscriber('franka_current_position', Float64MultiArray,
