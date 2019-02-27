@@ -124,7 +124,9 @@ class ReebGraph:
         mid_pts = np.array([x[0] for x in suitable_points])
         x_cord_mid = mid_pts[:, 0]
         y_cord_mid = mid_pts[:, 1]
-        self.object_orientation = abs(math.degrees(math.atan(np.polyfit(x_cord_mid, y_cord_mid, 1)[0])))
+        print np.polyfit(x_cord_mid, y_cord_mid, 1), math.degrees(math.atan(np.polyfit(x_cord_mid, y_cord_mid, 1)[1])), \
+            math.degrees(math.atan(np.polyfit(x_cord_mid, y_cord_mid, 1)[0]))
+        self.object_orientation = math.degrees(math.atan(np.polyfit(x_cord_mid, y_cord_mid, 1)[0]))
 
         for itr in range(len(suitable_points)):
             nearest1 = self.contour[self.closest_pt(suitable_points[itr][2][0], self.contour)]
@@ -141,7 +143,7 @@ class ReebGraph:
                     orientation_weight = 1/diff_orientation
             distance_from_mid = itr - len(suitable_points)/2
             if distance_from_mid is 0:
-                distance_weight = 0
+                distance_weight = sys.maxint
             else:
                 distance_weight = 1/abs(itr - len(suitable_points)/2)
             suitable_points[itr].append((nearest2[0][0], nearest2[0][1]))

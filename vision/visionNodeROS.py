@@ -26,7 +26,7 @@ class GripperData:
             self.pose_goal.header.frame_id = "/panda_link0"
             self.pose_goal.pose.orientation.x = orient['x']
             self.pose_goal.pose.orientation.y = orient['y']
-            self.pose_goal.pose.orientation.z = orient['z']
+            self.pose_goal.pose.orientation.z = np.deg2rad(orient['z'])
             self.pose_goal.pose.orientation.w = orient['w']
 
             self.pose_goal.pose.position.x = position['x']
@@ -37,7 +37,7 @@ class GripperData:
 
 
 def detect_object_and_gripping_point(data, arg):
-    z_buffer = 0
+    z_buffer = 0.02
     tf_endEffector_to_camera = []
     tf_robotBaseframe_to_end_effector = []
     orientation_EF = 0
@@ -54,7 +54,7 @@ def detect_object_and_gripping_point(data, arg):
         tf_robotBaseframe_to_end_effector = np.transpose(np.reshape(current_robot_pose, (4, 4)))
         orientation_EF = FrameTransformation.quaternion_msg_from_matrix(tf_robotBaseframe_to_end_effector)
     # print tf_robotBaseframe_to_end_effector
-    object_location_wrt_camera = [[arg[0]['x']], [arg[0]['y']], [arg[0]['z']], [1]]
+    object_location_wrt_camera = [[arg[0]['x']], [arg[0]['y']], [arg[0]['z'] + z_buffer], [1]]
     # print object_location_wrt_camera
     object_location_wrt_endEffector = np.dot(tf_endEffector_to_camera, object_location_wrt_camera)
 
@@ -68,15 +68,15 @@ def detect_object_and_gripping_point(data, arg):
 
     object_quaternion_wrt_robot_baseframe = {'x': orientation_EF.x,
                                              'y': orientation_EF.y,
-                                             'z': orientation_EF.z,
+                                             'z': arg[0]['o'],
                                              'w': orientation_EF.w}
     arg[1].set_gripper(object_location_wrt_robot_baseframe, object_quaternion_wrt_robot_baseframe)
 
 
 if __name__ == "__main__":
     object_list_keypress = {'objA': 97, 'objB': 98, 'objC': 99, 'objD': 100}
-    # object_name = raw_input('Enter object to grasp: ')
-    object_name = 'objC'
+    object_name = raw_input('Enter object to grasp: ')
+    # object_name = 'objC'
 
     if object_name not in object_list_keypress.keys():
         print 'No object with name found'
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     reeb_graph = ReebGraph.ReebGraph(gripper_width=1000, realtime_cam=True)
     reference_pix = (40, 40)
     padding_around_reference_pix = 10
-    camera = objectSelectorOOP.RealSenseCamera(object_list=None, realsense_image_cols=848, realsense_image_rows=480,
+    camera = objectSelectorOOP.RealSenseCamera(object_list=None, realsense_image_cols=1280, realsense_image_rows=720,
                                                realsense_image_padding=10, realsense_camera=True, flt_sz=3,
                                                cnny_thrsh=30,
                                                cnny_itr=10, area_threshold=1000)
@@ -111,6 +111,9 @@ if __name__ == "__main__":
         image_contour_xyz = img['contour']
         # got object_identifier object at 0
         [prediction_name, prediction_percentage] = object_identifier.predict(image_rgb).split(':')
+        # cv2.imshow('detected_obj', image_rgb)
+        # cv2.imshow('entire image', entire_image)
+        # cv2.waitKey(0)
         if object_name == prediction_name:
             reeb_graph.get_image_contour(entire_image, image_contour_xyz)
             gripping_points = reeb_graph.gripping_points
@@ -138,17 +141,20 @@ if __name__ == "__main__":
             cv2.imshow('detected_obj', image_rgb)
             cv2.imshow('entire image', entire_image)
             cv2.waitKey(0)
-    object_location = {'x': x_cord_1, 'y': y_cord_1, 'z': z_cord_1, 'o': orientation}
-    print object_location
-    rospy.init_node('camera_node_for_gripping', anonymous=True)
-    gripping_point_pub = rospy.Publisher('reply_gripping_point', PoseStamped, queue_size=1)
-    gripping_point_sub = rospy.Subscriber('franka_current_position', Float64MultiArray,
-                                          detect_object_and_gripping_point,
-                                          (object_location, gripper_data))
+            object_location = {'x': x_cord_1, 'y': y_cord_1, 'z': z_cord_1, 'o': orientation}
+            print object_location
+            rospy.init_node('camera_node_for_gripping', anonymous=True)
+            gripping_point_pub = rospy.Publisher('reply_gripping_point', PoseStamped, queue_size=1)
+            gripping_point_sub = rospy.Subscriber('franka_current_position', Float64MultiArray,
+                                                  detect_object_and_gripping_point,
+                                                  (object_location, gripper_data))
 
-    rate = rospy.Rate(10)  # 10hz
-    while not rospy.is_shutdown():
-        if gripper_data.gripper_set:
-            # print gripper_data.pose_goal
-            gripping_point_pub.publish(gripper_data.pose_goal)
-            rate.sleep()
+            rate = rospy.Rate(10)  # 10hz
+            while not rospy.is_shutdown():
+                if gripper_data.gripper_set:
+                    # print gripper_data.pose_goal
+                    gripping_point_pub.publish(gripper_data.pose_goal)
+                    rate.sleep()
+        else:
+            continue
+

@@ -29,3 +29,4 @@ class ObjectIdentfier:
         # build the label
         label = "{}: {:.2f}%".format(self.list_of_objects[label], predictions[label] * 100)
         return label
+
