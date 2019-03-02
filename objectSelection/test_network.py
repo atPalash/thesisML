@@ -15,13 +15,13 @@ import cv2
 imagePaths = sorted(list(paths.list_images('images/sample_images/test_Data')))
 random.seed(42)
 random.shuffle(imagePaths)
-classes = 3
+classes = 2
 # load the trained convolutional neural network
 print("[INFO] loading network...")
-model = load_model('models/weights_best_RGB_3class.hdf5')
+model = load_model('models/weights_best_RGB_2class.hdf5')
 
 print model.summary()
-list_of_objects = {0: 'objA', 1: 'objB', 2: 'objC'}
+list_of_objects = {0: 'objC', 1: 'objD'}
 count = 0
 IM_SIZE = 200
 depth = 3

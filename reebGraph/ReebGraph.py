@@ -120,11 +120,11 @@ class ReebGraph:
         for pt in suitable_points:
             selected_pts.append(pt[0])
             # sel_pts.append(pt[0])
-            # cv2.circle(self.mask_image, (pt[0][1], pt[0][0]), 1, (0, 255, 255), -1)
+            cv2.circle(self.mask_image, (pt[0][1], pt[0][0]), 1, (0, 255, 255), -1)
         mid_pts = np.array([x[0] for x in suitable_points])
         x_cord_mid = mid_pts[:, 0]
         y_cord_mid = mid_pts[:, 1]
-        print np.polyfit(x_cord_mid, y_cord_mid, 1), math.degrees(math.atan(np.polyfit(x_cord_mid, y_cord_mid, 1)[1])), \
+        print "polyfit data ", np.polyfit(x_cord_mid, y_cord_mid, 1), math.degrees(math.atan(np.polyfit(x_cord_mid, y_cord_mid, 1)[1])), \
             math.degrees(math.atan(np.polyfit(x_cord_mid, y_cord_mid, 1)[0]))
         self.object_orientation = math.degrees(math.atan(np.polyfit(x_cord_mid, y_cord_mid, 1)[0]))
 
@@ -133,17 +133,17 @@ class ReebGraph:
             suitable_points[itr].append((nearest1[0][0], nearest1[0][1]))
             nearest2 = self.contour[self.closest_pt(suitable_points[itr][2][1], self.contour)]
             orientation_weight = 0
-            if itr < len(suitable_points) - 1:
-                orientation = abs(math.degrees(math.atan2(abs(nearest2[0][1] - nearest1[0][1]),
-                                                          abs(nearest2[0][0] - nearest1[0][0]))))
-                diff_orientation = abs(orientation - self.object_orientation)
-                if diff_orientation is 0:
-                    orientation_weight = sys.maxint
-                else:
-                    orientation_weight = 1/diff_orientation
+            # if itr < len(suitable_points) - 1:
+            #     orientation = abs(math.degrees(math.atan2(abs(nearest2[0][1] - nearest1[0][1]),
+            #                                               abs(nearest2[0][0] - nearest1[0][0]))))
+            #     diff_orientation = abs(orientation - self.object_orientation)
+            #     if diff_orientation is 0:
+            #         orientation_weight = 1
+            #     else:
+            #         orientation_weight = 1/diff_orientation
             distance_from_mid = itr - len(suitable_points)/2
             if distance_from_mid is 0:
-                distance_weight = sys.maxint
+                distance_weight = 1
             else:
                 distance_weight = 1/abs(itr - len(suitable_points)/2)
             suitable_points[itr].append((nearest2[0][0], nearest2[0][1]))
@@ -152,9 +152,9 @@ class ReebGraph:
         # for i in range(-1, -50, -1):
         #     self.gripping_points.append((suitable_points[i][3], suitable_points[i][4]))
         self.gripping_points.append((suitable_points[-1][3], suitable_points[-1][4]))
-        # cv2.imshow('masked_image_gripper', self.mask_image)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
+        cv2.imshow('masked_image_gripper', self.mask_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
     def closest_pt(self, pt, sel_pts):
         min = sys.maxint
