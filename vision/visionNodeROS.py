@@ -37,7 +37,7 @@ class GripperData:
 
 
 def detect_object_and_gripping_point(data, arg):
-    z_buffer = 0.02
+    z_buffer = 0.0
     tf_endEffector_to_camera = []
     tf_robotBaseframe_to_end_effector = []
     orientation_EF = 0
@@ -49,7 +49,7 @@ def detect_object_and_gripping_point(data, arg):
                                                                                     end_effector_RF_position, z_buffer)
     elif type(data) is Float64MultiArray:
         current_robot_pose = data.data
-        tf_endEffector_to_camera = [ 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0.05, -0.06, 1]
+        tf_endEffector_to_camera = [ 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0.02, 0.05, -0.05, 1]
         tf_endEffector_to_camera = np.transpose(np.reshape(tf_endEffector_to_camera, (4, 4)))
         tf_robotBaseframe_to_end_effector = np.transpose(np.reshape(current_robot_pose, (4, 4)))
         orientation_EF = FrameTransformation.quaternion_msg_from_matrix(tf_robotBaseframe_to_end_effector)
@@ -74,17 +74,17 @@ def detect_object_and_gripping_point(data, arg):
 
 
 if __name__ == "__main__":
-    object_list_keypress = {'objA': 97, 'objB': 98, 'objC': 99, 'objD': 100}
-    object_name = raw_input('Enter object to grasp: ')
-    # object_name = 'objC'
+    object_list_keypress = {'objC': 97, 'objD': 98}
+    # object_name = raw_input('Enter object to grasp: ')
+    object_name = 'objC'
 
     if object_name not in object_list_keypress.keys():
         print 'No object with name found'
         exit(0)
     gripper_data = GripperData()
 
-    object_list = {0: 'objA', 1: 'objB', 2: 'objC', 3: 'objD'}
-    selected_model = '/home/palash/thesis/thesisML/objectSelection/models/weights_best_RGB_3class.hdf5'
+    object_list = {0: 'objC', 1: 'objD'}
+    selected_model = '/home/palash/thesis/thesisML/objectSelection/models/weights_best_RGB_2class.hdf5'
     object_identifier = objectIdentifier.ObjectIdentfier(selected_model, 4, 3, object_list)
     reeb_graph = ReebGraph.ReebGraph(gripper_width=1000, realtime_cam=True)
     reference_pix = (40, 40)
@@ -98,7 +98,9 @@ if __name__ == "__main__":
     camera.get_image_data()
     images = camera.detected_object_images
     entire_image = camera.padded_image
-
+    cv2.imshow('entire image', entire_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     x_cord_1 = 0
     y_cord_1 = 0
     z_cord_1 = 0
@@ -111,14 +113,16 @@ if __name__ == "__main__":
         image_contour_xyz = img['contour']
         # got object_identifier object at 0
         [prediction_name, prediction_percentage] = object_identifier.predict(image_rgb).split(':')
+        cv2.putText(image_rgb, prediction_name + ": " + str(prediction_percentage),
+                    (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
         # cv2.imshow('detected_obj', image_rgb)
-        # cv2.imshow('entire image', entire_image)
         # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+        prediction_name = "objC"
         if object_name == prediction_name:
             reeb_graph.get_image_contour(entire_image, image_contour_xyz)
             gripping_points = reeb_graph.gripping_points
-            cv2.putText(image_rgb, prediction_name,
-                        (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
+
             orientation = reeb_graph.object_orientation
             for c_pts in gripping_points:
                 for contour_pt in image_contour_xyz:
@@ -138,9 +142,10 @@ if __name__ == "__main__":
                             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 0), 1)
                 cv2.putText(entire_image, "({x:.1f}, {y:.1f}, {z:.1f})".format(x=x_cord_2, y=y_cord_2, z=z_cord_2), c_pts[1],
                             cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 255), 1)
-            cv2.imshow('detected_obj', image_rgb)
+
             cv2.imshow('entire image', entire_image)
             cv2.waitKey(0)
+            cv2.destroyAllWindows()
             object_location = {'x': x_cord_1, 'y': y_cord_1, 'z': z_cord_1, 'o': orientation}
             print object_location
             rospy.init_node('camera_node_for_gripping', anonymous=True)

@@ -203,7 +203,9 @@ class RealSenseCamera:
                 edged = cv2.Canny(gray, self.canny_threshold, self.canny_threshold)
                 edged = cv2.dilate(edged, None, iterations=self.canny_iteration_num)
                 edged = cv2.erode(edged, None, iterations=self.canny_iteration_num)
-
+                # cv2.imshow('edged', edged)
+                # cv2.waitKey(0)
+                # cv2.destroyAllWindows()
                 # find contours in the edge map
                 cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL,
                                         cv2.CHAIN_APPROX_SIMPLE)
@@ -214,6 +216,7 @@ class RealSenseCamera:
 
                 for c in cnts:
                     area_ = cv2.contourArea(c)
+                    # print "countour area", area_
                     # if the contour is not sufficiently large, ignore it
                     if cv2.contourArea(c) < self.object_area_threshold:
                         continue

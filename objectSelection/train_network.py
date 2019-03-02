@@ -17,7 +17,7 @@ import numpy as np
 import cv2
 import os
 
-list_of_objects = {'objA': 0, 'objB': 1, 'objC': 2} #, 'objD': 3}
+list_of_objects = {'objC': 0, 'objD': 1}
 # initialize the number of epochs to train for, initia learning rate,
 # and batch size
 EPOCHS = 30
@@ -28,7 +28,7 @@ IM_SIZE = 200
 print("[INFO] loading images...")
 labels = []
 data = []
-classes = 3
+classes = 2
 # grab the image paths and randomly shuffle them
 imagePaths = sorted(list(paths.list_images('images/trainingGenerator')))
 random.seed(42)
@@ -104,7 +104,7 @@ model.compile(loss="categorical_crossentropy", optimizer=opt,
               metrics=["accuracy"])
 
 # checkpoint best model
-filepath = "models/weights_best_RGB_3class.hdf5"
+filepath = "models/weights_best_RGB_2class.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint]
 
