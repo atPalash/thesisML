@@ -75,8 +75,8 @@ def detect_object_and_gripping_point(data, arg):
 
 if __name__ == "__main__":
     object_list_keypress = {'objC': 97, 'objD': 98}
-    # object_name = raw_input('Enter object to grasp: ')
-    object_name = 'objC'
+    object_name = raw_input('Enter object to grasp: ')
+    # object_name = 'objC'
 
     if object_name not in object_list_keypress.keys():
         print 'No object with name found'
@@ -118,7 +118,7 @@ if __name__ == "__main__":
         # cv2.imshow('detected_obj', image_rgb)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
-        prediction_name = "objC"
+        # prediction_name = "objC"
         if object_name == prediction_name:
             reeb_graph.get_image_contour(entire_image, image_contour_xyz)
             gripping_points = reeb_graph.gripping_points
